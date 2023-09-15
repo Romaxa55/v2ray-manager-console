@@ -2,15 +2,15 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="100px">
 
-      <el-form-item label="email" prop="email">
+      <el-form-item label="Email" prop="email">
         <el-input v-model="postForm.email" />
       </el-form-item>
 
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="Пароль" prop="password">
         <el-input v-model="postForm.password" />
       </el-form-item>
 
-      <el-form-item label="角色" prop="role">
+      <el-form-item label="Роль" prop="role">
 
         <el-select v-model="postForm.role">
           <el-option
@@ -23,7 +23,7 @@
       </el-form-item>
 
       <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-        提交
+        Сохранить
       </el-button>
     </el-form>
   </div>
@@ -58,7 +58,7 @@ export default {
       loading: false,
       rules: Object.assign({}, defaultRules),
       tempRoute: {},
-      roleOptions: [{ value: 'vip', label: '会员' }, { value: 'admin', label: '管理员' }]
+      roleOptions: [{ value: 'vip', label: 'Участник' }, { value: 'admin', label: 'Администратор' }]
 
     }
   },
@@ -82,8 +82,8 @@ export default {
           formData.password = md5(formData.password)
           addUser(formData).then(response => {
             this.$notify({
-              title: '成功',
-              message: '提交成功',
+              title: 'Успешно',
+              message: 'Отправлено успешно',
               type: 'success',
               duration: 2000
             })

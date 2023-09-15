@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addServer(data) {
   return request({
-    url: '/server',
+    url: '/api/server',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function addServer(data) {
  */
 export function updateServer(data) {
   return request({
-    url: '/server',
+    url: '/api/server',
     method: 'put',
     data
   })
@@ -25,7 +25,7 @@ export function updateServer(data) {
  */
 export function getServer(id) {
   return request({
-    url: `/server/${id}`,
+    url: `/api/server/${id}`,
     method: 'get'
   })
 }
@@ -36,7 +36,7 @@ export function getServer(id) {
  */
 export function serverList(page) {
   return request({
-    url: `/server`,
+    url: `/api/server`,
     method: 'get',
     params: page
   })
@@ -47,7 +47,7 @@ export function serverList(page) {
  */
 export function availableServers() {
   return request({
-    url: `/server/findServersForAccount`,
+    url: `/api/server/findServersForAccount`,
     method: 'get',
   })
 }
@@ -57,7 +57,7 @@ export function availableServers() {
  */
 export function deleteServer(id) {
   return request({
-    url: `/server/${id}`,
+    url: `/api/server/${id}`,
     method: 'DELETE'
   })
 }

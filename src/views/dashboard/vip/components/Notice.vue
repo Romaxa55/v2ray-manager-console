@@ -2,14 +2,16 @@
   <div class="user-activity">
     <div class="post" v-for=" (item,index) in list" :key="index">
       <div class="user-block">
-        <img class="img-circle" :src="'https://apic.douyucdn.cn/upload/avanew/face/201705/15/17/109dae304969a8dc9dfd318c34cb71e9_middle.jpg'+avatarPrefix">
+        <div class="card-panel-icon-wrapper">
+        <div class="icon-people img-circle"></div>
+    </div>
         <span class="username text-muted">{{item.name}}</span>
         <span class="description"> Sharing time - {{ item.updateTime | parseTime('{y}-{m}-{d}')}}</span>
       </div>
-    
+
         <div class="tui-editor-contents" v-html="item.content"  />
       <!--     <markdown-editor mode='wysiwyg' v-model="item.content"  /> -->
-     
+
       <!-- <ul class="list-inline">
         <li>
           <span class="link-black text-sm">
@@ -17,7 +19,7 @@
             Share
           </span>
         </li>
-        
+
         <li>
           <span class="link-black text-sm">
             <svg-icon icon-class="like" />
@@ -26,7 +28,7 @@
         </li>
       </ul> -->
     </div>
- 
+
 
 
     <!-- <div class="user-activity">
@@ -57,17 +59,17 @@
           </span>
         </li>
       </ul>
-    </div> 
-    
+    </div>
+
     -->
- </div> 
+ </div>
 </template>
 
 <script>
 
 const avatarPrefix = '?imageView2/1/w/80/h/80'
 const carouselPrefix = '?imageView2/2/h/440'
-import { listNotice } from '@/api/notice' 
+import { listNotice } from '@/api/notice'
 
 
 import 'tui-editor/dist/tui-editor-contents.css' // editor content

@@ -5,149 +5,134 @@
       <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
         <el-card>
         <div slot="header" >
-          
-       账号: {{ account.accountNo }}  
-         <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
-       </div>
-          
 
-            <el-form-item label="等级:" >
+       Счет: {{ account.accountNo }}
+       </div>
+
+
+            <el-form-item label="Уровень:" >
             {{ account.level |levelFilter }}
             </el-form-item>
-          <el-form-item label=" 有效时间:" >
+          <el-form-item label=" Активен до:" >
               <!--  {{ account.fromDate | parseTime('{y}-{m}-{d} {h}:{i}') }} - -->
-        
+
             <span>
               <font v-if="account.toDate>new Date().getTime()">  {{ account.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
               <font v-else color="red">  {{ account.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
             </span>
           </el-form-item>
 
-            <el-form-item label=" 账号状态:" >
+            <el-form-item label=" Статус аккаунта:" >
               <!--  {{ account.fromDate | parseTime('{y}-{m}-{d} {h}:{i}') }} - -->
-        
+
             <span>
               <font v-if="account.status == 1">  {{ account.status |accountStatusFilter}}</font>
               <font v-else color="red">  {{ account.status |accountStatusFilter}}</font>
             </span>
           </el-form-item>
 
-            <el-form-item label=" 结算时间:" v-if="account.statVO">
+            <el-form-item label=" Время расчета:" v-if="account.statVO">
               <span>{{account.statVO.toDate  | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
             </el-form-item>
-          <el-form-item label="速率:" >
+          <el-form-item label="ставка:" >
             <span></span>
             <span>{{ account.speed | speedFilter }}</span>
             </el-form-item>
-          <el-form-item label="周期:" >
+          <el-form-item label="сутки:" >
             <!-- <span>周期：</span> -->
-            {{ account.cycle }}天/周期
+            {{ account.cycle }} дней/период
             </el-form-item>
-          <el-form-item label="流量:">
-            
-       
+          <el-form-item label="трафик:">
+
+
             <span>
               <font v-if="(account.statVO?(account.statVO.flow/1024/1024/1024).toFixed(2) : 0)<account.bandwidth">{{ account.statVO?(account.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
               <font v-else color="red">{{ account.statVO?(account.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
               /{{ account.bandwidth }}GB/周期</span>
           </el-form-item>
-          <el-form-item label="连接数:">{{ account.maxConnection }}/账号
+          <el-form-item label="Количество соединений:">{{ account.maxConnection }}/акк
              </el-form-item>
-        
-           
-            <el-form-item label="订阅地址(推荐):">
-                 <el-col :xs="24" :sm="6" :lg="6" >
+
+
+            <el-form-item label="Адрес подписки (рекомендовано):">
+                 <el-col :xs="24" :sm="12" :lg="12" >
                <el-input v-model="account.subscriptionUrl" >  <el-button slot="prepend" @click="generatorNewSubscriptionUrl()">
-                 <div v-if="!account.subscriptionUrl">生成</div><div v-if="account.subscriptionUrl">更新</div>
-               </el-button> <el-button slot="append" @click="handlerCopy(account.subscriptionUrl,$event)">复制</el-button> </el-input>
-           
+                 <div v-if="!account.subscriptionUrl">Создать</div>
+                 <div v-if="account.subscriptionUrl">Обновить</div>
+               </el-button> <el-button slot="append" @click="handlerCopy(account.subscriptionUrl,$event)">Копировать</el-button> </el-input>
+
              </el-col >
-             
+
                </el-form-item>
-            
-          
-   
+
+
+
         </el-card>
       </el-col>
-
-      <!-- <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
-        <el-card>
-          <div slot="header" >
-          服务器信息
-          </div>
-          <div v-if="account.server">
-           <el-form-item label="服务器名称:">   {{ account.server.serverName  }}  </el-form-item>
-            <el-form-item label="服务器地址:">{{ account.server.clientDomain }}</el-form-item>
-            <el-form-item label="流量倍数:">{{ account.server.multiple }}</el-form-item>
-            <el-form-item label="服务器状态:">{{ account.server.status |statusFilter2 }}</el-form-item>
-            <div> <el-link icon="el-icon-edit" type="primary" @click="changeServerDidlog(account.id)">更改服务器</el-link> </div>
-          </div>
-          <div v-else><el-link icon="el-icon-edit" type="primary" @click="changeServerDidlog(account.id)">选择你的服务器</el-link> </div>
-        </el-card>
-      </el-col> -->
 
       <el-col :xs="24" :sm="24" :lg="24" class="card-panel-col">
         <el-card>
             <div slot="header" >
-            v2ray账号
+            Учетная запись v2ray
           </div>
 
-        
+
             <el-row >
-             
+
              <el-col :xs="24" :sm="24" :lg="12">
-               
-                  <el-form-item label="服务器:">
-                    <el-select v-model="serverId" @change="serverChange" placeholder="请选择服务器">
+
+                  <el-form-item label="Сервер:">
+                    <el-select v-model="serverId" @change="serverChange" placeholder="Пожалуйста, выберите сервер">
                          <el-option
                         v-for="item in serverList"
                         :key="item.value"
                           :label="item.label"
                          :value="item.value">
                        </el-option>
-                  
+
                       </el-select>
-                    </el-form-item>  
-             <div v-if="v2rayAccount">       
-            <el-form-item label="地址:">{{ v2rayAccount.add }}</el-form-item>
-            <el-form-item label="端口:">{{ v2rayAccount.port }}</el-form-item>
-            <el-form-item label="用户Id:">{{ v2rayAccount.id }}</el-form-item>
-            <el-form-item label="额外Id(alterId):">{{ v2rayAccount.aid }}</el-form-item>
-            <el-form-item label="加密方式:">auto</el-form-item>
-            <el-form-item label="传输协议:">{{ v2rayAccount.net }}</el-form-item>
-            <el-form-item label="伪装类型:">{{ v2rayAccount.type }}</el-form-item>
-            <el-form-item label="传输域名(host):">{{ v2rayAccount.host }}</el-form-item>
-            <el-form-item label="路径(path):">{{ v2rayAccount.path }}</el-form-item>
-            <el-form-item label="底层传输安全(tls):">{{ v2rayAccount.tls }}</el-form-item>
-            <el-form-item label="服务器描述:">{{ server.desc }}</el-form-item>
+                    </el-form-item>
+             <div v-if="v2rayAccount">
+            <el-form-item label="Адрес:">{{ v2rayAccount.add }}</el-form-item>
+            <el-form-item label="Порт:">{{ v2rayAccount.port }}</el-form-item>
+            <el-form-item label="ID пользователя:">{{ v2rayAccount.id }}</el-form-item>
+            <el-form-item label="Дополнительный ID (alterId):">{{ v2rayAccount.aid }}</el-form-item>
+            <el-form-item label="Метод шифрования:">auto</el-form-item>
+            <el-form-item label="Транспортный протокол:">{{ v2rayAccount.net }}</el-form-item>
+            <el-form-item label="Тип маскировки:">{{ v2rayAccount.type }}</el-form-item>
+            <el-form-item label="Транспортное доменное имя (host):">{{ v2rayAccount.host }}</el-form-item>
+            <el-form-item label="Путь (path):">{{ v2rayAccount.path }}</el-form-item>
+            <el-form-item label="Транспортная безопасность на нижнем уровне (tls):">{{ v2rayAccount.tls }}</el-form-item>
+            <el-form-item label="Описание сервера:">{{ server.desc }}</el-form-item>
+
              </div>
-               </el-col> 
-            
+               </el-col>
+
               <el-col :xs="24" :sm="24" :lg="12" >
                    <div v-if="v2rayAccount">
               <el-form-item label="" >
-              <el-col :xs="24" :sm="24" :lg="6">
-                   <el-input v-model="toColip"> <el-button slot="append" @click="handlerCopy(toColip,$event)">复制</el-button> </el-input>
+              <el-col :xs="24" :sm="20" :lg="20">
+                   <el-input v-model="toColip"> <el-button slot="append" @click="handlerCopy(toColip,$event)">Копировать</el-button> </el-input>
               </el-col>
             </el-form-item>
             <el-form-item label="">
               <vue-qr :text="toColip" qid="qrcode" />
             </el-form-item>
 
-            
+
                     </div>
               </el-col>
-        
+
             </el-row>
-           
-         
-         
+
+
+
         </el-card>
       </el-col>
-  
+
 
     </el-row>
-    
+
     </el-form>
   </div>
 </template>
@@ -170,19 +155,19 @@ export default {
   filters: {
     levelFilter(status) {
       const statusMap = {
-        0: '等级0',
-        1: '等级1',
-        2: '等级2',
-        3: '等级3'
+        0: 'Уровень 0',
+        1: 'Уровень 1',
+        2: 'Уровень 2',
+        3: 'Уровень 3'
       }
       return statusMap[status]
     }
     ,
     speedFilter: function(v) {
-      if (v <= 1024) { return '流畅' } else if (v > 1024 && v <= 2024) {
-        return '高速'
+      if (v <= 1024) { return 'Плавный' } else if (v > 1024 && v <= 2024) {
+        return 'Высокоскоростной'
       } else {
-        return '极速'
+        return 'Сверхскоростной'
       }
     },
     statusFilter(status) {
@@ -193,15 +178,15 @@ export default {
       return statusMap[status]
     }, accountStatusFilter(status) {
       const statusMap = {
-        '1': '正常',
-        '0': '禁用'
-      }  
+        '1': 'Нормальный',
+        '0': 'Заблокирован'
+      }
       return statusMap[status]
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': '在线',
-        '0': '下线'
+        '1': 'Онлайн',
+        '0': 'Оффлайн'
       }
       return statusMap[status]
     }
@@ -213,10 +198,10 @@ export default {
       server:null,
       accountFormOptions: [{
         value: 1,
-        label: '正常'
+        label: 'Нормальный'
       }, {
         value: 0,
-        label: '禁止'
+        label: 'Заблокирован'
       }],
       accountForm: {
         id: null,
@@ -266,31 +251,31 @@ export default {
   methods: {
    generatorNewSubscriptionUrl(){
 
-   
+
      if(this.isEdit){
-      this.$confirm('确认更新操作？成功原订阅地址将失效。', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+      this.$confirm('Подтвердите обновление? После успеха предыдущий адрес подписки будет недействительным.', 'Подсказка', {
+          confirmButtonText: 'Подтвердить',
+          cancelButtonText: 'Отменить',
           type: 'warning',
           roundButton:true,
           center:false
         }).then(() => {
             this.trueGeneratorSubscriptionUrl()
-    
+
         }).catch(() => {
-            
+
         });
      }else{
        this.trueGeneratorSubscriptionUrl()
      }
-     
-      
-    
+
+
+
    },
    trueGeneratorSubscriptionUrl(){
        generatorSubscriptionUrl().then(response =>{
         this.getRemoteAccount();
-        this.$message.success('更新订阅地址成功，原地址已经失效')
+        this.$message.success('Адрес подписки успешно обновлен, предыдущий адрес стал недействительным.')
    })
    },
     handlerCopy(text, event) {
@@ -309,17 +294,17 @@ export default {
     getServerList() {
       availableServers().then(response => {
         this.serverList=[]
-  
-         
+
+
         for( var i in response.obj){
          var server= response.obj[i]
             var localserver={}
             localserver.value=server.id
             localserver.label=server.serverName
             this.serverList[i]=localserver
-          
+
         }
-        
+
       })
     },
     formatDate(date) {

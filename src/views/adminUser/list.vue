@@ -2,26 +2,26 @@
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column width="100px" align="center" label="email">
+      <el-table-column width="200px" align="center" label="email">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" align="center" label="角色">
+      <el-table-column width="150px" align="center" label="Роль">
         <template slot-scope="scope">
           <span>{{ scope.row.role ||statusFilter2 }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="200px" align="center" label="备注">
+      <el-table-column width="200px" align="center" label="Примечание">
         <template slot-scope="scope">
           <span>{{ scope.row.remark}}</span>
-          <span ><el-button type="text" @click="addRemark(scope.row.email,scope.row.id)">修改备注</el-button></span>
+          <span ><el-button type="text" @click="addRemark(scope.row.email,scope.row.id)">Изменить примечания</el-button></span>
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" align="center" label="状态">
+      <el-table-column width="100px" align="center" label="Статус">
         <template slot-scope="{row}">
           <el-tag>
             {{ row.status |statusFilter1 }}
@@ -30,16 +30,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="241">
+      <el-table-column align="center" label="Действие" width="241">
         <template slot-scope="scope">
           <el-button type="danger" size="small" @click="updateStatus(scope.row.id,scope.row.status)">{{ scope.row.status | statusFilter3 }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Delete</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Удалить</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
-  
+
   </div>
 
 </template>
@@ -51,7 +51,7 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 const switchStatus = function(status) {
   if (status === 1) return 0
   else if (status === 0) return 1
-  else throw new Error('status错误')
+  else throw new Error('ошибка статуса')
 }
 export default {
   name: 'ServerList',
@@ -59,22 +59,22 @@ export default {
   filters: {
     statusFilter1(status) {
       const statusMap = {
-        1: '正常',
-        0: '禁用'
+        1: 'Активный',
+        0: 'Заблокирован'
       }
       return statusMap[status]
     },
     statusFilter2(status) {
       const statusMap = {
-        'admin': '管理员',
-        'vip': '会员'
+        'admin': 'Администратор',
+        'vip': 'Модератор'
       }
       return statusMap[status]
     },
     statusFilter3(status) {
       const statusMap = {
-        1: '禁用',
-        0: '启用'
+        1: 'Банить',
+        0: 'Разбанить'
       }
       return statusMap[status]
     }
@@ -96,22 +96,22 @@ export default {
   },
   methods: {
    addRemark(email,userId) {
-        this.$prompt('请输入'+email+'的备注', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-         
+        this.$prompt('Пожалуйста, введите примечание для '+email, 'Уведомление', {
+          confirmButtonText: 'Конечно',
+          cancelButtonText: 'Отмена',
+
         }).then(({ value }) => {
 
           addremark({'id':userId,'remark':value}).then(()=>{
           this.$message({
             type: 'success',
-            message: '修改备注为: ' + value + '成功'
+            message: 'Примечание успешно изменено на: ' + value
           });
           this.getList()
           })
-         
+
         }).catch(() => {
-                
+
         });
       },
     updateStatus(id, status) {
@@ -123,36 +123,24 @@ export default {
         () => {
           this.$message({
             type: 'success',
-            message: '修改成功!'
+            message: 'Успешно изменено!'
           })
           this.getList()
         })
-      // .catch(() => {
-      //     this.$message({
-      //       type: 'error',
-      //       message: '修改失败'
-      //     });
-      //   });
     },
     handleDelete(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Эта операция будет удалена без возможности восстановления. Продолжить?', 'Уведомление', {
+        confirmButtonText: 'Конечно',
+        cancelButtonText: 'Отмена',
         type: 'warning'
       }).then(() => {
         delUser(id).then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Успешно удалено!'
           })
           this.getList()
         })
-        //   .catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });
-        // });
       })
     },
     getList() {

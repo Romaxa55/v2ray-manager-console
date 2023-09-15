@@ -2,27 +2,27 @@
 <div>
 
      <div class="editor-container">
-       
+
        <el-form :model="defaultform" ref="defaultform"  label-width="80px" class="form"  :rules="rules" >
-          
-          <el-form-item label="公告名称" prop="name">
+
+          <el-form-item label="Название объявления" prop="name">
             <el-input v-model="defaultform.name"></el-input>
           </el-form-item>
 
 
-            <el-form-item label="结束时间" prop="toDate">
+            <el-form-item label="Время окончания" prop="toDate">
             <!-- <el-input v-model="form.todate"></el-input> -->
              <el-date-picker
            v-model="defaultform.toDate"
            align="right"
            type="date"
-           placeholder="选择日期"
+           placeholder="Выберите дату"
            value-format="timestamp"
            :picker-options="pickerOptions">
          </el-date-picker>
              </el-form-item>
 
-              <el-form-item label="公告状态" prop="status">
+              <el-form-item label="Статус объявления" prop="status">
            <el-select v-model="defaultform.status">
           <el-option
             v-for="item in statusOptions"
@@ -32,20 +32,20 @@
           />
         </el-select>
             </el-form-item>
-            
+
             <el-form-item label="内容" prop="content">
              <markdown-editor ref="markdownEditor" v-model="defaultform.content" height="300px"  />
             </el-form-item>
-           
+
              <el-form-item>
            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        
+
   </el-form-item>
        </el-form>
-     
+
     </div>
 </div>
- 
+
 </template>
 
 <script>
@@ -77,13 +77,13 @@ export default {
         status:1,
         content:""
         },
-       statusOptions: [{ value: 1, label: '上线' }, { value: 0, label: '下线' }],
+       statusOptions: [{ value: 1, label: 'В сети' }, { value: 0, label: 'Не в сети' }],
        pickerOptions: {
           disabledDate(time) {
             return time.getTime() < Date.now();
           },
           shortcuts: [ {
-            text: '一周后',
+            text: 'неделю спустя',
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
@@ -91,7 +91,7 @@ export default {
             }
           },
           {
-            text: '一个月',
+            text: 'месяц',
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() + 3600 * 1000 * 24 * 30);
@@ -99,14 +99,14 @@ export default {
             }
           },
            {
-            text: '三个月',
+            text: 'три месяца',
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() + 3600 * 1000 * 24 * 30*3);
               picker.$emit('pick', date);
             }
           },{
-            text: '一年后',
+            text: 'год спустя',
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() + 3600 * 1000 * 24 * 30*12);
@@ -123,7 +123,7 @@ export default {
     }
 },
   computed:{
-    
+
   } ,
   methods: {
     onSubmit(){
@@ -136,8 +136,8 @@ export default {
           req.then(response => {
 
             this.$notify({
-              title: '成功',
-              message: '提交成功',
+              title: 'Успешно',
+              message: 'Отправлено успешно',
               type: 'success',
               duration: 2000
             })

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addServerConfig(data) {
   return request({
-    url: 'serverConfig',
+    url: '/api/serverConfig',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function addServerConfig(data) {
  */
 export function updateServerConfig(data) {
   return request({
-    url: 'serverConfig',
+    url: '/api/serverConfig',
     method: 'put',
     data
   })
@@ -25,7 +25,7 @@ export function updateServerConfig(data) {
  */
 export function getServerConfig(id) {
   return request({
-    url: `serverConfig/${id}`,
+    url: `/api/serverConfig/${id}`,
     method: 'get'
   })
 }
@@ -36,7 +36,7 @@ export function getServerConfig(id) {
  */
 export function listServerConfig(page) {
   return request({
-    url: `serverConfig`,
+    url: `/api/serverConfig`,
     method: 'get',
     params: page
   })
@@ -48,7 +48,7 @@ export function listServerConfig(page) {
  */
 export function deleteServerConfig(id) {
   return request({
-    url: `serverConfig/${id}`,
+    url: `/api/serverConfig/${id}`,
     method: 'DELETE'
   })
 }

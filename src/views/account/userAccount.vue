@@ -1,140 +1,120 @@
 <template>
-  <div class="app-container ">
+  <div class="app-container">
+    <el-row :gutter="15">
+      <el-col :span="3">
+        <el-input v-model="listQuery.userEmail" placeholder="email" />
+      </el-col>
+      <el-col :span="2">
+        <el-button @click="getList">Поиск</el-button>
+      </el-col>
+    </el-row>
 
-        <el-row :gutter="15">
-         
-          <el-col :span="3" > <el-input v-model="listQuery.userEmail" placeholder="email" /> </el-col>
-          <el-col :span="2">  <el-button @click="getList">搜索</el-button> </el-col>
-        
-        </el-row>
-     
     <el-table v-loading="listLoading" :data="list" fit highlight-current-row style="width: 100%">
 
-      <el-table-column  align="left" label="账号信息">
+      <el-table-column  align="left" label="Информация об аккаунте">
         <template slot-scope="scope">
-          <div><span>用户：{{ scope.row.userVO?scope.row.userVO.email:'' }}</span></div>
-            <div><span>备注：{{ scope.row.userVO?scope.row.userVO.remark:'' }}</span></div>
-          <div><span>账号：{{ scope.row.accountNo }}</span></div>
-         
-        </template>
-      </el-table-column>
-      
- <el-table-column  align="left" label="">
-      <template slot-scope="scope">
-    <div>
-            <span> 有效时间： </span>
+          <div><span>Пользователь：{{ scope.row.userVO?scope.row.userVO.email:'' }}</span></div>
+            <div><span>Комментарий：{{ scope.row.userVO?scope.row.userVO.remark:'' }}</span></div>
+          <div><span>Учетная запись：{{ scope.row.accountNo }}</span></div>
+          <span> Срок действия： </span>
             <span>
               <font v-if="scope.row.toDate>new Date().getTime()">  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
               <font v-else color="red">  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
             </span>
-          </div>
           <div v-if="scope.row.statVO">
 
-            <span>结算时间：{{scope.row.statVO.toDate  | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            <span>Время расчета：{{scope.row.statVO.toDate  | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
           </div>
-            </template>
-  </el-table-column>
+            <div> <span>Скорость：{{ scope.row.speed | speedFilter }}</span></div>
+
+        </template>
+      </el-table-column>
+
 
  <el-table-column  align="left" label="">
     <template slot-scope="scope">
-  <div> <span>速率：{{ scope.row.speed | speedFilter }}</span></div>
-          <div>周期：{{ scope.row.cycle }}天/周期</div>
-          <div>流量：<span>
+          <div>Цикл：{{ scope.row.cycle }} день/цикл</div>
+          <div>Трафик：<span>
             <font v-if="(scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0)<scope.row.bandwidth">{{ scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
             <font v-else color="red">{{ scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
-            /{{ scope.row.bandwidth }}GB/周期</span>
+            /{{ scope.row.bandwidth }}GB/цикл</span>
+            <div>Макс. число подкл.：{{ scope.row.maxConnection }}/акк</div>
+            <div>Уровень: {{scope.row.level |levelFilter}}</div>
+           <div>Статус: {{scope.row.status |accountStatusFilter}}</div>
           </div>
             </template>
  </el-table-column>
 
-  <el-table-column  align="left" label="">
-     <template slot-scope="scope">
-    <div>单服务器连接数：{{ scope.row.maxConnection }}/账号</div>
-    <div>账号等级:{{scope.row.level |levelFilter}}</div>      
-   <div>账号状态:{{scope.row.status |accountStatusFilter}}</div>    
-          </template>
- </el-table-column>
-     
+
      <el-table-column  align="left" label="">
      <template slot-scope="scope">
-   
-   <div> <el-link icon="el-icon-edit" type="primary" @click="openAccountDidlog(scope.row)">编辑账号</el-link> </div>
+
+   <div> <el-link icon="el-icon-edit" type="primary" @click="openAccountDidlog(scope.row)">Редактировать</el-link> </div>
           </template>
  </el-table-column>
     </el-table>
-    
+
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
-    <!-- 账号管理 -->
-    <el-dialog title="修改" :visible.sync="accountDialog" :before-close="handlerAccountCloseDialog">
+    <!-- Управление учетными записями -->
+    <el-dialog title="Изменить" :visible.sync="accountDialog" :before-close="handlerAccountCloseDialog">
       <el-form ref="accountForm" :model="accountForm" label-width="80px">
-        <el-form-item label="账号">
+        <el-form-item label="Учетная запись">
           <el-input v-model="accountForm.accountNo" />
         </el-form-item>
-        <el-form-item label="周期">
+        <el-form-item label="Цикл">
           <el-input v-model="accountForm.cycle" />
         </el-form-item>
-        <el-form-item label="有效期">
+        <el-form-item label="Срок действия">
             <el-date-picker
               v-model="accountForm.fromDate"
               value-format="timestamp"
               type="datetime"
             />
-            <span>to</span>
+            <span>до</span>
             <el-date-picker
               v-model="accountForm.toDate"
               value-format="timestamp"
               type="datetime"
             />
-          <!-- <el-input v-model="accountForm.fromDate"></el-input> -->
         </el-form-item>
-        <el-form-item label="增加N天">
-          
+        <el-form-item label="Добавить N дней">
           <el-input v-model="accountForm.addDay" size="medium" >
-             <el-button slot="append" @click="addToDate">增加</el-button>
+             <el-button slot="append" @click="addToDate">Добавить</el-button>
           </el-input>
-       
-
         </el-form-item>
-        <el-form-item label="速率">
+        <el-form-item label="Скорость">
           <el-input v-model="accountForm.speed" />
         </el-form-item>
-        <el-form-item label="流量">
-          <el-input v-model="accountForm.bandwidth" />
-        </el-form-item>
-        <el-form-item label="连接数">
+        <el-form-item label="Макс. число подключений">
           <el-input v-model="accountForm.maxConnection" />
         </el-form-item>
-        
-        <el-form-item label="账号等级" prop="level">
-        <el-select v-model="accountForm.level">
-          <el-option
-            v-for="item in levelOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="accountForm.status" placeholder="状态">
-            <el-option
-              v-for="item in accountFormOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+        <el-form-item label="Уровень">
+            <el-select v-model="accountForm.level" placeholder="Выберите">
+              <el-option
+                v-for="item in levelOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
         </el-form-item>
-        <el-form-item>
-
-          <el-button @click="submitUpdateAccount">提交</el-button>
-
+        <el-form-item label="Статус">
+            <el-select v-model="accountForm.status" placeholder="Выберите">
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
         </el-form-item>
       </el-form>
-
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="accountDialog = false">Отменить</el-button>
+        <el-button type="primary" @click="submitAccountForm">Подтвердить</el-button>
+      </div>
     </el-dialog>
-    
   </div>
 </template>
 
@@ -157,24 +137,24 @@ export default {
   filters: {
      accountStatusFilter(status) {
       const statusMap = {
-        '1': '正常',
-        '0': '禁用'
-      }  
+        '1': 'активен',
+        '0': 'заблокирован'
+      }
       return statusMap[status]
     },
     speedFilter: function(v) {
-      if (v <= 1024) { return '流畅' } else if (v > 1024 && v <= 2024) {
-        return '高速'
+      if (v <= 1024) { return 'Норм' } else if (v > 1024 && v <= 2024) {
+        return 'Высокая'
       } else {
-        return '极速'
+        return 'Ультра'
       }
     },
     levelFilter(status) {
       const statusMap = {
-        0: '等级0',
-        1: '等级1',
-        2: '等级2',
-        3: '等级3'
+        0: 'Уровень 0',
+        1: 'Уровень 1',
+        2: 'Уровень 2',
+        3: 'Уровень 3'
       }
       return statusMap[status]
     },
@@ -187,8 +167,8 @@ export default {
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': '在线',
-        '0': '下线'
+        '1': 'В сети',
+        '0': 'Не в сети'
       }
       return statusMap[status]
     }
@@ -196,13 +176,13 @@ export default {
   },
   data() {
     return {
-       levelOptions: [{ value: 0, label: '等级0' }, { value: 1, label: '等级1' },{ value: 2, label: '等级2' },{ value: 3, label: '等级3' }],
+       levelOptions: [{ value: 0, label: 'Уровень 0' }, { value: 1, label: 'Уровень 1' },{ value: 2, label: 'Уровень 2' },{ value: 3, label: 'Уровень 3' }],
       accountFormOptions: [{
         value: 1,
-        label: '正常'
+        label: 'Нормальный'
       }, {
         value: 0,
-        label: '禁止'
+        label: 'Заблокирован'
       }],
       accountForm: {
         id: null,
@@ -273,19 +253,19 @@ export default {
       console.log(this.accountForm)
       this.accountForm.content = null
       updateAccount(this.accountForm).then(_ => {
-        this.$message.success('提交成功')
+        this.$message.success('Отправлено успешно')
         this.getList()
       })
     },
     submitUpdateServer() {
       if (!this.chooseServerId) {
-        this.$message.error('请选择服务器')
+        this.$message.error('пожалуйста, выберите сервер')
         this.$refs.multipleTable.clearSelection()
         return
       }
       var data = { 'id': this.opAccountId, 'serverId': this.chooseServerId }
       updateAccountServer(data).then(response => {
-        this.$message.success('提交成功,原账号将失效,请使用新账号')
+        this.$message.success('Отправка прошла успешно, исходная учетная запись будет недействительна, используйте новую учетную запись.')
         this.getList()
       })
     },
@@ -298,7 +278,7 @@ export default {
     handleCurrentChange(rows) {
       this.chooseServerId = null
       if (rows.length > 1) {
-        this.$message.error('只能选择一个服务器')
+        this.$message.error('Можно выбрать только один сервер')
 
         return
       }
@@ -352,12 +332,13 @@ export default {
 </script>
 <style scoped>
 
-.mainDiv {
-    margin-left: 10%;
-    margin-right: 10%;
-
+.el-table th, .el-table td {
+    padding: 10px 15px;
+    background-color: #f7f7f7;
+    border: none;
+    border-radius: 5px;
 }
-.box-card {
-    width: 480px;
-  }
+
+
 </style>
+

@@ -1,77 +1,72 @@
 <template>
   <div class="app-container">
-    <el-row><el-button  @click="dialogVisible = true" type="primary" plain>->生成邀请码 </el-button></el-row>
+    <el-row><el-button  @click="dialogVisible = true" type="primary" plain>->Создать код приглашения </el-button></el-row>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column  align="center" label="邀请码">
+      <el-table-column  align="center" label="Код приглашения">
         <template slot-scope="scope">
           <span>{{ scope.row.inviteCode }}</span>
         </template>
       </el-table-column>
 
-       <el-table-column  align="center" label="使用用户">
+       <el-table-column  align="center" label="Пользователь">
         <template slot-scope="scope">
           <span>{{ scope.row.userName }}</span>
         </template>
-      </el-table-column> 
-     <el-table-column  align="center" label="有效时间">
+      </el-table-column>
+     <el-table-column  align="center" label="Срок действия">
         <template slot-scope="scope">
-          <div v-if="scope.row.effectiveTime !=null"> 
+          <div v-if="scope.row.effectiveTime !=null">
            <font v-if="scope.row.effectiveTime<new Date().getTime()" color="red" >
               {{ scope.row.effectiveTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}
            </font>
            <font v-else>  {{ scope.row.effectiveTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</font>
            </div>
         </template>
-      </el-table-column> 
-     
-      <el-table-column  align="center" label="状态">
+      </el-table-column>
+
+      <el-table-column  align="center" label="Состояние">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status |statusFilter2 }}
           </el-tag>
         </template>
       </el-table-column>
-            <el-table-column  align="center" label="操作">
+            <el-table-column  align="center" label="действовать">
         <template slot-scope="{row}">
-      
-           <el-button @click="handleDelete(row.id)">删除</el-button>
+
+           <el-button @click="handleDelete(row.id)">удалить</el-button>
 
         </template>
       </el-table-column>
-      <!-- <el-table-column align="center" label="Actions" width="241">
-        <template slot-scope="scope">
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Delete</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
       <el-dialog
-  title="生成邀请码"
-  :visible.sync="dialogVisible" > 
+  title="Создать код приглашения"
+  :visible.sync="dialogVisible" >
   <!-- :before-close="handleClose"-->
- 
-  
-    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="100px">
 
-      <el-form-item label="数量" prop="quantity">
-        <el-input-number :min="1" :max="100" label="数量" v-model="postForm.quantity"  />
+
+    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="140px">
+
+      <el-form-item label="Кол-во" prop="quantity">
+        <el-input-number :min="1" :max="100" label="Кол-во" v-model="postForm.quantity"  />
       </el-form-item>
 
-      <el-form-item label="有效时间" prop="effectiveTime">
+      <el-form-item label="Срок действия" prop="effectiveTime">
         <el-date-picker
       v-model="postForm.effectiveTime"
       type="date"
        value-format="timestamp"
-      placeholder="选择日期">
+      placeholder="Выберите дату">
     </el-date-picker>
       </el-form-item>
     </el-form>
 
   <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="handlerGenerate()">确 定</el-button>
+    <el-button @click="dialogVisible = false">Отмена</el-button>
+    <el-button type="primary" @click="handlerGenerate()">Конечно</el-button>
   </span>
 </el-dialog>
   </div>
@@ -86,12 +81,12 @@ import { date } from 'jszip/lib/defaults'
           if(value){
               console.log("value:"+ value)
               if(value<new Date().getTime()){
-                 callback(new Error("请选择大于当前时间的的日期"))
+                 callback(new Error("Пожалуйста, выберите дату, большую, чем текущее время"))
                  return
               }
             callback()
           }else{
-            callback(new Error("请选择日期"))
+            callback(new Error("Пожалуйста, выберите дату"))
           }
       };
 const defaultRules = {
@@ -115,14 +110,14 @@ export default {
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': '已使用',
-        '0': '未使用'
+        '1': 'Использовал',
+        '0': 'Неиспользованный'
       }
       return statusMap[status]
     }
   },
   data() {
-     
+
     return {
       postForm: Object.assign({}, defaultForm),
       rules: Object.assign({}, defaultRules),
@@ -134,7 +129,7 @@ export default {
         page: 1,
         pageSize: 10
       }
-      
+
     }
   },
   created() {
@@ -143,13 +138,13 @@ export default {
   methods: {
      handlerGenerate() {
            this.$refs.postForm.validate(valid => {
-        
+
         if (valid) {
 
      generate(this.postForm).then(() => {
           this.$message({
             type: 'success',
-            message: '生成成功!'
+            message: 'Сгенерировано успешно!'
           })
          this.dialogVisible=false;
           this.getList();
@@ -159,25 +154,25 @@ export default {
           return false;
         }
         })
-  
-   
+
+
    },
     handleDelete(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Эта операция будет удалена без возможности восстановления. Продолжить?', 'Уведомление', {
+        confirmButtonText: 'Конечно',
+        cancelButtonText: 'Отмена',
         type: 'warning'
       }).then(() => {
         del(id).then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Успешно удалено!'
           })
           this.getList()
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: 'Восстановить удаление'
           })
         })
       })

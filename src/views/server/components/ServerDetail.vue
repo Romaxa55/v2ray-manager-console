@@ -93,8 +93,8 @@ const defaultForm = {
   proxyPort: 8091,
   // v2ray открываем IP и порт
   v2rayIp: '127.0.0.1',
-  v2rayPort: 6001,
-  v2rayManagerPort: 62789,
+  v2rayPort: 1310,
+  v2rayManagerPort: 62182,
   // Несколько трафиков
   multiple: 1,
 

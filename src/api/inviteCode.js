@@ -1,12 +1,12 @@
 import request from '@/utils/request'
 
 /**
- * 获取邀请码列表
+ * Получить список кодов приглашения
  * @param {*} page
  */
 export function list(page) {
   return request({
-    url: `invite-code`,
+    url: `/api/invite-code`,
     method: 'get',
     params: page
   })
@@ -18,7 +18,7 @@ export function list(page) {
  */
 export function del(id) {
   return request({
-    url: `invite-code/${id}`,
+    url: `/api/invite-code/${id}`,
     method: 'DELETE'
   })
 }
@@ -28,7 +28,7 @@ export function del(id) {
  */
 export function generate(data) {
   return request({
-    url: `invite-code`,
+    url: `/api/invite-code`,
     method: 'post',
     data
   })

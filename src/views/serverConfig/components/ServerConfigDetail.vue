@@ -2,7 +2,7 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="100px">
 
-      <el-form-item label="key描述" prop="name">
+      <el-form-item label="Name" prop="name">
         <el-input v-model="postForm.name" />
       </el-form-item>
 
@@ -16,7 +16,7 @@
 
       <el-form-item>
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          提交
+          Сохранить
         </el-button>
       </el-form-item>
 
@@ -85,8 +85,8 @@ export default {
           req.then(response => {
             // console.log('addserver chenggong !' + response)
             this.$notify({
-              title: '成功',
-              message: '提交成功',
+              title: 'Успешно',
+              message: 'Отправлено успешно',
               type: 'success',
               duration: 2000
             })

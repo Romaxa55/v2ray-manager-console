@@ -19,51 +19,19 @@
     </div>
 <div class="user-bio">
     <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="edit" /><span>修改密码</span></div>
+        <div class="user-bio-section-header"><svg-icon icon-class="edit" /><span>Изменить пароль</span></div>
           <el-form  :model="postForm" :rules="rules" ref="postForm">
-            <el-form-item label="原密码" prop="oldPassword" ><el-input placeholder="原密码" show-password v-model="postForm.oldPassword"></el-input></el-form-item>
-            <el-form-item  label="新密码" prop="newPassword"><el-input placeholder="新密码" show-password  v-model="postForm.newPassword"></el-input></el-form-item>
-          
+            <el-form-item label="Старый пароль" prop="oldPassword" ><el-input placeholder="Старый пароль" show-password v-model="postForm.oldPassword"></el-input></el-form-item>
+            <el-form-item  label="Новый пароль" prop="newPassword"><el-input placeholder="Новый пароль" show-password  v-model="postForm.newPassword"></el-input></el-form-item>
+
               <el-form-item>
-               
+
                  <el-button @click="chPw()" >提交</el-button>
                  </el-form-item>
-            
+
           </el-form>
       </div>
 </div>
-    <!-- <div class="user-bio">
-      <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>Education</span></div>
-        <div class="user-bio-section-body">
-          <div class="text-muted">
-            JS in Computer Science from the University of Technology
-          </div>
-        </div>
-      </div>
-
-      <div class="user-skills user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
-        <div class="user-bio-section-body">
-          <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="70" />
-          </div>
-          <div class="progress-item">
-            <span>JavaScript</span>
-            <el-progress :percentage="18" />
-          </div>
-          <div class="progress-item">
-            <span>Css</span>
-            <el-progress :percentage="12" />
-          </div>
-          <div class="progress-item">
-            <span>ESLint</span>
-            <el-progress :percentage="100" status="success" />
-          </div>
-        </div>
-      </div>
-    </div> -->
   </el-card>
 </template>
 
@@ -82,7 +50,7 @@ export default {
           email: '',
           avatar: '',
           roles: '',
-         
+
         }
       }
     }
@@ -97,9 +65,9 @@ export default {
   },methods:{
     chPw(){
 
-          this.$confirm(' 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          this.$confirm(' Стоит ли продолжать?', 'Уведомление', {
+          confirmButtonText: 'Конечно',
+          cancelButtonText: 'Отмена',
           type: 'warning'
         }).then(() => {
 
@@ -108,26 +76,26 @@ export default {
             var data= {oldPassword:md5(this.postForm.oldPassword),newPassword:md5(this.postForm.newPassword)};
             changepassword(data).then(response =>{
              this.$notify({
-              title: '成功',
-              message: '提交成功',
+              title: 'Успешно',
+              message: 'Отправлено успешно',
               type: 'success',
               duration: 2000
             })
-              
+
             })
 
           }else{
-          
+
           return false
           }
               })
 
         }).catch(() => {
-          
+
         });
-      
-      
-     
+
+
+
     }
   }
 }

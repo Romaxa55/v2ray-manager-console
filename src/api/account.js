@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getAccount(id) {
   return request({
-    url: `/account/${id}`,
+    url: `/api/account/${id}`,
     method: 'get'
   })
 }
@@ -18,18 +18,18 @@ export function getAccount(id) {
  */
 export function generatorSubscriptionUrl(data) {
   return request({
-    url: `/account/generatorSubscriptionUrl`,
+    url: `/api/account/generatorSubscriptionUrl`,
     method: 'get',
     data
   })
 }
 /**
  * 获取账号连接数
- * @param {*} id 
+ * @param {*} id
  */
 export function getConnection(id) {
   return request({
-    url: `account/connection/${id}`,
+    url: `/api/account/connection/${id}`,
     method: 'get'
   })
 }
@@ -40,7 +40,7 @@ export function getConnection(id) {
  */
 export function getV2rayAccount(data) {
   return request({
-    url: `/account/v2rayAccount`,
+    url: `/api/account/v2rayAccount`,
     method: 'get',
     params: data
   })
@@ -51,7 +51,7 @@ export function getV2rayAccount(data) {
  */
 export function accountsList(data) {
   return request({
-    url: `/account`,
+    url: `/api/account`,
     method: 'get',
     params: data
   })
@@ -64,7 +64,7 @@ export function accountsList(data) {
  */
 export function updateAccount(data) {
   return request({
-    url: `/account`,
+    url: `/api/account`,
     method: 'put',
     data
   })

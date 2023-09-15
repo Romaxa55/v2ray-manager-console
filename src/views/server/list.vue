@@ -2,25 +2,25 @@
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column width="100px" align="center" label="服务器名称">
+      <el-table-column width="100px" align="center" label="Имя">
         <template slot-scope="scope">
           <span>{{ scope.row.serverName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" align="center" label="访问域名">
+      <el-table-column width="150px" align="center" label="Domain">
         <template slot-scope="scope">
           <span>{{ scope.row.clientDomain }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" align="center" label="中间件地址">
+      <el-table-column width="150px" align="center" label="Proxy">
         <template slot-scope="scope">
           <span>{{ scope.row.proxyIp }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" align="center" label="v2ray地址">
+      <el-table-column width="80px" align="center" label="v2ray Ip">
         <template slot-scope="scope">
           <span>{{ scope.row.v2rayIp }}</span>
         </template>
@@ -32,7 +32,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" align="center" label="服务器等级">
+      <el-table-column width="80px" align="center" label="Level">
         <template slot-scope="{row}">
           <span>{{ row.level | levelFilter }}</span>
         </template>
@@ -44,13 +44,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="200px" align="center" label="服务描述">
+      <el-table-column width="200px" align="center" label="Описание">
         <template slot-scope="scope">
           <span>{{ scope.row.desc }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" align="center" label="服务器状态">
+      <el-table-column width="80px" align="center" label="Состояние сервера">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status |statusFilter2 }}
@@ -59,14 +59,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="241">
+      <el-table-column align="center" label="Действие" width="241">
         <template slot-scope="scope">
           <router-link :to="'/server/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
-              Edit
+              Ред.
             </el-button>
           </router-link>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Delete</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Удалить</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,17 +92,17 @@ export default {
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': '在线',
-        '0': '下线'
+        '1': 'В сети',
+        '0': 'Не в сети'
       }
       return statusMap[status]
     },
     levelFilter(level) {
       const levelMap = {
-        '0': '等级0',
-        '1': '等级1',
-        '2': '等级2',
-        '3': '等级3'
+        '0': 'Уровень 0',
+        '1': 'Уровень 1',
+        '2': 'Уровень 2',
+        '3': 'Уровень 3'
       }
       return levelMap[level]
     }
@@ -123,21 +123,21 @@ export default {
   },
   methods: {
     handleDelete(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Эта операция будет удалена без возможности восстановления. Продолжить?', 'Уведомление', {
+        confirmButtonText: 'Конечно',
+        cancelButtonText: 'Отмена',
         type: 'warning'
       }).then(() => {
         deleteServer(id).then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Успешно удалено!'
           })
           this.getList()
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: 'Восстановить'
           })
         })
       })
