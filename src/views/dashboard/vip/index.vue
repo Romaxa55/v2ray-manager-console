@@ -4,13 +4,10 @@
     <el-row :gutter="10">
         <el-card>
            <el-tabs v-model="activeTab">
-           <el-tab-pane label="公告" name="Notice">
+           <el-tab-pane label="Уведомления" name="Notice">
                 <Notice />
               </el-tab-pane>
-              <el-tab-pane label="知识" name="knowledge">
-               todo
-              </el-tab-pane>
-              <!-- 
+              <!--
               <el-tab-pane label="Account" name="account">
                  <timeline />
                 <account :user="user" />
@@ -23,15 +20,15 @@
   </el-row>
     <el-row>
       <el-collapse v-model="activeNames">
-      
+
         <div v-for=" (item,index) in list" :key="index">
       <el-collapse-item :title="item.name" :name="index" >
        <div v-html="item.content" />
       </el-collapse-item>
       </div>
-   
-  
-  
+
+
+
 </el-collapse>
     </el-row> -->
   </div>
@@ -78,7 +75,7 @@ export default {
     border: 0;
     right: 0;
   }
- 
+
 
   .dashboard-editor-container {
    // background-color: #e3e3e3;
@@ -95,8 +92,8 @@ export default {
       color: #333;
       display: block;
     }
-   
-  
+
+
 
   }
 </style>

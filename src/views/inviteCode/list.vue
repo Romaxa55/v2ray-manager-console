@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-row><el-button  @click="dialogVisible = true" type="primary" plain>->Создать код приглашения </el-button></el-row>
+    <el-row><el-button  @click="dialogVisible = true" type="primary" plain>-> Создать код приглашения </el-button></el-row>
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column  align="center" label="Код приглашения">
         <template slot-scope="scope">

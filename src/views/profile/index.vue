@@ -18,7 +18,7 @@
               </el-tab-pane>
               <el-tab-pane label="Account" name="account">
                 <account :user="user" />
-              </el-tab-pane> 
+              </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>-->
@@ -34,7 +34,7 @@ import UserCard from './components/UserCard'
 import Activity from './components/Activity'
 import Timeline from './components/Timeline'
 import Account from './components/Account'
-import { Level } from 'chalk'
+// import { Level } from 'chalk'
 
 export default {
   name: 'Profile',
@@ -62,8 +62,8 @@ export default {
         role: this.roles.join(' | '),
         email: 'admin@test.com',
         avatar: this.avatar
-        
-        
+
+
       }
     }
   }

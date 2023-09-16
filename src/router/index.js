@@ -169,13 +169,13 @@ export const asyncRoutes = [
   {
     path: '/account',
     component: Layout,
-    name:'Баланс',
+    name:'account',
     meta:{icon: 'tab', title:"Баланс"},
     children: [
       {
         path: 'userAccount',
         component: () => import('@/views/account/userAccount'),
-        name: 'Баланс',
+        name: 'User Account',
         meta: { title: 'Управление аккаунтом' , roles: ['admin'] },
       },
       {
@@ -225,7 +225,7 @@ export const asyncRoutes = [
     path: '/inviteCode',
     component: Layout,
     redirect: '/inviteCode/list',
-    name: 'Список кодов приглашения',
+    name: 'inviteCode',
     meta: {
       title: 'Список кодов приглашения',
       icon: 'list',

@@ -3,14 +3,14 @@
 
      <div class="editor-container">
 
-       <el-form :model="defaultform" ref="defaultform"  label-width="80px" class="form"  :rules="rules" >
+       <el-form :model="defaultform" ref="defaultform"  label-width="140px" class="form"  :rules="rules" >
 
-          <el-form-item label="Название объявления" prop="name">
+          <el-form-item label="Заголовок" prop="name">
             <el-input v-model="defaultform.name"></el-input>
           </el-form-item>
 
 
-            <el-form-item label="Время окончания" prop="toDate">
+            <el-form-item label="Срок" prop="toDate">
             <!-- <el-input v-model="form.todate"></el-input> -->
              <el-date-picker
            v-model="defaultform.toDate"
@@ -22,7 +22,7 @@
          </el-date-picker>
              </el-form-item>
 
-              <el-form-item label="Статус объявления" prop="status">
+              <el-form-item label="Статус" prop="status">
            <el-select v-model="defaultform.status">
           <el-option
             v-for="item in statusOptions"
@@ -33,12 +33,12 @@
         </el-select>
             </el-form-item>
 
-            <el-form-item label="内容" prop="content">
+            <el-form-item label="Текст" prop="content">
              <markdown-editor ref="markdownEditor" v-model="defaultform.content" height="300px"  />
             </el-form-item>
 
              <el-form-item>
-           <el-button type="primary" @click="onSubmit">立即创建</el-button>
+           <el-button type="primary" @click="onSubmit">Сохранить</el-button>
 
   </el-form-item>
        </el-form>
@@ -77,7 +77,7 @@ export default {
         status:1,
         content:""
         },
-       statusOptions: [{ value: 1, label: 'В сети' }, { value: 0, label: 'Не в сети' }],
+       statusOptions: [{ value: 1, label: 'Опубликован' }, { value: 0, label: 'Черновик' }],
        pickerOptions: {
           disabledDate(time) {
             return time.getTime() < Date.now();

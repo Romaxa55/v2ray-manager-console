@@ -2,18 +2,18 @@
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column  align="center" width="120px" label="公告标题">
+      <el-table-column  align="center" width="120px" label="Название">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-        <el-table-column  align="center" label="结束时间" width="120px">
+        <el-table-column  align="center" label="Срок" width="120px">
         <template slot-scope="scope">
           <span>{{ scope.row.toDate | parseTime('{y}-{m}-{d}')}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" align="center" label="状态">
+      <el-table-column width="130px" align="center" label="Статус">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status |statusFilter2 }}
@@ -21,21 +21,21 @@
         </template>
       </el-table-column>
 
-    
-        <el-table-column  align="center" label="公告内容">
+
+        <el-table-column  align="center" label="Текст">
         <template slot-scope="scope">
            <div v-html="scope.row.content" />
-         
+
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="241">
+      <el-table-column align="center" label="Действие" width="241">
         <template slot-scope="scope">
           <router-link :to="'/notice/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
-              Edit
+              Ред.
             </el-button>
           </router-link>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Delete</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Удалить</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,8 +60,8 @@ export default {
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': '在线',
-        '0': '下线'
+        '1': 'Опубликовано',
+        '0': 'Черновик'
       }
       return statusMap[status]
     }
@@ -82,21 +82,21 @@ export default {
   },
   methods: {
     handleDelete(id) {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Это действие приведет к безвозвратному удалению. Продолжить?', 'Уведомление', {
+        confirmButtonText: 'Подтвердить',
+        cancelButtonText: 'Отменить',
         type: 'warning'
       }).then(() => {
         delNotice(id).then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Успешно удалено!'
           })
           this.getList()
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: 'Удаление отменено'
           })
         })
       })

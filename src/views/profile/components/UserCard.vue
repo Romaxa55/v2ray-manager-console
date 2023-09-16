@@ -26,7 +26,7 @@
 
               <el-form-item>
 
-                 <el-button @click="chPw()" >提交</el-button>
+                 <el-button @click="chPw()" >Сохранить</el-button>
                  </el-form-item>
 
           </el-form>

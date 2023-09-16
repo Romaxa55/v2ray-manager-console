@@ -1,132 +1,154 @@
 <template>
-  <div class="app-container">
+  <div class="app-container ">
+
     <el-row :gutter="15">
+
       <el-col :span="3">
-        <el-input v-model="listQuery.userEmail" placeholder="email" />
+        <el-input v-model="listQuery.userEmail" placeholder="email"/>
       </el-col>
       <el-col :span="2">
         <el-button @click="getList">Поиск</el-button>
       </el-col>
+
     </el-row>
 
     <el-table v-loading="listLoading" :data="list" fit highlight-current-row style="width: 100%">
 
-      <el-table-column  align="left" label="Информация об аккаунте">
+      <el-table-column align="left" label="Информация об аккаунте">
         <template slot-scope="scope">
-          <div><span>Пользователь：{{ scope.row.userVO?scope.row.userVO.email:'' }}</span></div>
-            <div><span>Комментарий：{{ scope.row.userVO?scope.row.userVO.remark:'' }}</span></div>
-          <div><span>Учетная запись：{{ scope.row.accountNo }}</span></div>
-          <span> Срок действия： </span>
+          <div><span>Пользователь: {{ scope.row.userVO ? scope.row.userVO.email : '' }}</span></div>
+          <div><span>ID Аккаунт: {{ scope.row.accountNo }}</span></div>
+          <div><span>Примечание: {{ scope.row.userVO ? scope.row.userVO.remark : '' }}</span></div>
+          <div>
+            <span> Срок действия: </span>
             <span>
-              <font v-if="scope.row.toDate>new Date().getTime()">  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
-              <font v-else color="red">  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</font>
+              <font v-if="scope.row.toDate > new Date().getTime()">
+                  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}
+              </font>
+              <font v-else color="red">
+                  {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}
+              </font>
             </span>
-          <div v-if="scope.row.statVO">
-
-            <span>Время расчета：{{scope.row.statVO.toDate  | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
           </div>
-            <div> <span>Скорость：{{ scope.row.speed | speedFilter }}</span></div>
-
+          <div v-if="scope.row.statVO">
+            <span>Время расчета: {{ scope.row.statVO.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          </div>
         </template>
       </el-table-column>
 
 
- <el-table-column  align="left" label="">
-    <template slot-scope="scope">
-          <div>Цикл：{{ scope.row.cycle }} день/цикл</div>
-          <div>Трафик：<span>
-            <font v-if="(scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0)<scope.row.bandwidth">{{ scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
-            <font v-else color="red">{{ scope.row.statVO?(scope.row.statVO.flow/1024/1024/1024).toFixed(2) : 0 }}</font>
-            /{{ scope.row.bandwidth }}GB/цикл</span>
-            <div>Макс. число подкл.：{{ scope.row.maxConnection }}/акк</div>
-            <div>Уровень: {{scope.row.level |levelFilter}}</div>
-           <div>Статус: {{scope.row.status |accountStatusFilter}}</div>
+      <el-table-column align="left" label="">
+        <template slot-scope="scope">
+          <div><span>Скорость: {{ scope.row.speed | speedFilter }}</span></div>
+          <div>Цикл: {{ scope.row.cycle }} дней/цикл</div>
+          <div>Трафик: <span>
+                <font
+                  v-if="(scope.row.statVO ? (scope.row.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0) < scope.row.bandwidth">
+                    {{ scope.row.statVO ? (scope.row.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0 }}
+                </font>
+                <font v-else color="red">
+                    {{ scope.row.statVO ? (scope.row.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0 }}
+                </font>
+                /{{ scope.row.bandwidth }}GB/цикл</span>
           </div>
-            </template>
- </el-table-column>
+        </template>
+      </el-table-column>
 
+      <el-table-column align="left" label="">
+        <template slot-scope="scope">
+          <div>Кол-во соед.: {{ scope.row.maxConnection }}/аккаунт</div>
+          <div>Уровень аккаунта: {{ scope.row.level | levelFilter }}</div>
+          <div>Статус аккаунта: {{ scope.row.status | accountStatusFilter }}</div>
+        </template>
+      </el-table-column>
 
-     <el-table-column  align="left" label="">
-     <template slot-scope="scope">
-
-   <div> <el-link icon="el-icon-edit" type="primary" @click="openAccountDidlog(scope.row)">Редактировать</el-link> </div>
-          </template>
- </el-table-column>
+      <el-table-column align="left" label="">
+        <template slot-scope="scope">
+          <div>
+            <el-link icon="el-icon-edit" type="primary" @click="openAccountDidlog(scope.row)">Редактировать аккаунт
+            </el-link>
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :limit.sync="listQuery.pageSize" :page.sync="listQuery.page" :total="total"
+                @pagination="getList"/>
 
-    <!-- Управление учетными записями -->
-    <el-dialog title="Изменить" :visible.sync="accountDialog" :before-close="handlerAccountCloseDialog">
-      <el-form ref="accountForm" :model="accountForm" label-width="80px">
-        <el-form-item label="Учетная запись">
-          <el-input v-model="accountForm.accountNo" />
+    <!-- Управление аккаунтом -->
+    <el-dialog :before-close="handlerAccountCloseDialog" :visible.sync="accountDialog" title="Изменить">
+      <el-form ref="accountForm" :model="accountForm" label-width="150px"> <!-- Увеличена ширина подписи -->
+        <el-form-item label="Аккаунт">
+          <el-input v-model="accountForm.accountNo"/>
         </el-form-item>
         <el-form-item label="Цикл">
-          <el-input v-model="accountForm.cycle" />
+          <el-input v-model="accountForm.cycle"/>
         </el-form-item>
         <el-form-item label="Срок действия">
-            <el-date-picker
-              v-model="accountForm.fromDate"
-              value-format="timestamp"
-              type="datetime"
-            />
-            <span>до</span>
-            <el-date-picker
-              v-model="accountForm.toDate"
-              value-format="timestamp"
-              type="datetime"
-            />
+          <el-date-picker
+            v-model="accountForm.fromDate"
+            type="datetime"
+            value-format="timestamp"
+          />
+          <span>до</span>
+          <el-date-picker
+            v-model="accountForm.toDate"
+            type="datetime"
+            value-format="timestamp"
+          />
         </el-form-item>
         <el-form-item label="Добавить N дней">
-          <el-input v-model="accountForm.addDay" size="medium" >
-             <el-button slot="append" @click="addToDate">Добавить</el-button>
+          <el-input v-model="accountForm.addDay" size="medium">
+            <el-button slot="append" @click="addToDate">Добавить</el-button>
           </el-input>
         </el-form-item>
         <el-form-item label="Скорость">
-          <el-input v-model="accountForm.speed" />
+          <el-input v-model="accountForm.speed"/>
         </el-form-item>
-        <el-form-item label="Макс. число подключений">
-          <el-input v-model="accountForm.maxConnection" />
+        <el-form-item label="Трафик">
+          <el-input v-model="accountForm.bandwidth"/>
         </el-form-item>
-        <el-form-item label="Уровень">
-            <el-select v-model="accountForm.level" placeholder="Выберите">
-              <el-option
-                v-for="item in levelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+        <el-form-item label="Соед. на сервер:">
+          <el-input v-model="accountForm.maxConnection"/>
+        </el-form-item>
+        <el-form-item label="Уровень аккаунта" prop="level">
+          <el-select v-model="accountForm.level">
+            <el-option
+              v-for="item in levelOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="Статус">
-            <el-select v-model="accountForm.status" placeholder="Выберите">
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+          <el-select v-model="accountForm.status" placeholder="Статус">
+            <el-option
+              v-for="item in accountFormOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="submitUpdateAccount">Отправить</el-button>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="accountDialog = false">Отменить</el-button>
-        <el-button type="primary" @click="submitAccountForm">Подтвердить</el-button>
-      </div>
     </el-dialog>
+
+
   </div>
 </template>
 
 <script>
-import { getAccounts, accountsList, updateAccountServer, updateAccount } from '@/api/account'
-import { serverList } from '@/api/server'
+import {accountsList, getAccounts, updateAccount, updateAccountServer} from '@/api/account'
+import {serverList} from '@/api/server'
 import Pagination from '@/components/Pagination'
 import clip from '@/utils/clipboard'
-import { Base64 } from 'js-base64'
+import {Base64} from 'js-base64'
 import VueQr from 'vue-qr'
 import store from '@/store'
-import { log } from 'util'
 import permission from '@/directive/permission/index.js'
 
 var oneDayms = 3600 * 1000 * 24
@@ -137,16 +159,18 @@ export default {
   filters: {
      accountStatusFilter(status) {
       const statusMap = {
-        '1': 'активен',
-        '0': 'заблокирован'
+        '1': 'Активный',
+        '0': 'Заблокирован'
       }
       return statusMap[status]
     },
     speedFilter: function(v) {
-      if (v <= 1024) { return 'Норм' } else if (v > 1024 && v <= 2024) {
-        return 'Высокая'
+      if (v <= 1024) {
+        return 'Обычный'
+      } else if (v > 1024 && v <= 2024) {
+        return 'Быстрый'
       } else {
-        return 'Ультра'
+        return 'Супер быстрый'
       }
     },
     levelFilter(status) {
@@ -167,8 +191,8 @@ export default {
     },
     statusFilter2(status) {
       const statusMap = {
-        '1': 'В сети',
-        '0': 'Не в сети'
+        '1': 'Онлайн',
+        '0': 'Оффлайн'
       }
       return statusMap[status]
     }
@@ -176,10 +200,13 @@ export default {
   },
   data() {
     return {
-       levelOptions: [{ value: 0, label: 'Уровень 0' }, { value: 1, label: 'Уровень 1' },{ value: 2, label: 'Уровень 2' },{ value: 3, label: 'Уровень 3' }],
+      levelOptions: [{value: 0, label: 'Уровень 0'}, {value: 1, label: 'Уровень 1'}, {value: 2, label: 'Уровень 2'}, {
+        value: 3,
+        label: 'Уровень 3'
+      }],
       accountFormOptions: [{
         value: 1,
-        label: 'Нормальный'
+        label: 'Активный'
       }, {
         value: 0,
         label: 'Заблокирован'
@@ -259,13 +286,13 @@ export default {
     },
     submitUpdateServer() {
       if (!this.chooseServerId) {
-        this.$message.error('пожалуйста, выберите сервер')
+        this.$message.error('Пожалуйста, выберите сервер')
         this.$refs.multipleTable.clearSelection()
         return
       }
       var data = { 'id': this.opAccountId, 'serverId': this.chooseServerId }
       updateAccountServer(data).then(response => {
-        this.$message.success('Отправка прошла успешно, исходная учетная запись будет недействительна, используйте новую учетную запись.')
+        this.$message.success('Успешно отправлено, исходный аккаунт станет недействительным, пожалуйста, используйте новый аккаунт')
         this.getList()
       })
     },
@@ -332,13 +359,13 @@ export default {
 </script>
 <style scoped>
 
-.el-table th, .el-table td {
-    padding: 10px 15px;
-    background-color: #f7f7f7;
-    border: none;
-    border-radius: 5px;
+.mainDiv {
+  margin-left: 10%;
+  margin-right: 10%;
+
 }
 
-
+.box-card {
+  width: 480px;
+}
 </style>
-
