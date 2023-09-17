@@ -17,6 +17,21 @@ on:
       - '**/*.ts'            # Все TypeScript файлы
       - '**/*.js'            # Все JavaScript файлы
 jobs:
+  update-deps:
+    name: Bump Node version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: neverendingqs/gh-action-node-bump-version-pr@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type:
+            default: patch
+            description: Bumps the package version based on value (e.g. patch)
+            required: true
+
+
   build:
     runs-on: ubuntu-latest
     steps:
