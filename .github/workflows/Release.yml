@@ -1,10 +1,10 @@
 name: 'Release'
 
 on:
-  create:
+  push:
     tags:
       - '*'
-  workflow_dispatch:
+
 
 jobs:
   build:
