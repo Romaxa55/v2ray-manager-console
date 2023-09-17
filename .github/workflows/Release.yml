@@ -17,6 +17,7 @@ jobs:
           node-version: 20
 
       - run: |
+          git config --global url."https://".insteadOf git://
           yarn add @vue/cli
           yarn install
           yarn run build:prod
