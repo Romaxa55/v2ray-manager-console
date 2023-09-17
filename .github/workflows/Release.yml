@@ -17,6 +17,7 @@ jobs:
           node-version: 20
 
       - run: |
+          yarn add @vue/cli
           yarn install
           yarn run build:prod
 
