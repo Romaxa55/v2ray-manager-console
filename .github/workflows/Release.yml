@@ -17,7 +17,7 @@ jobs:
           node-version: 20
 
       - run: |
-          yarn global add @vue/cli
+          yarn install
           yarn run build:prod
 
       - name: Archive Release
