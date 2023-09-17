@@ -17,7 +17,8 @@ jobs:
           node-version: 20
 
       - run: |
-          yarn run build:prod --force
+          yarn global add @vue/cli
+          yarn run build:prod
 
       - name: Archive Release
         uses: thedoctor0/zip-release@0.7.1
