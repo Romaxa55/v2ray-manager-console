@@ -17,9 +17,7 @@ jobs:
           node-version: 20
 
       - run: |
-          npm install
-          npm install @vue/cli-service
-          npm run build:prod --force
+          yarn run build:prod --force
 
       - name: Archive Release
         uses: thedoctor0/zip-release@0.7.1
