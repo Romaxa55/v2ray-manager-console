@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - master
+    inputs:
+      version-type:
+        default: patch
+        description: Bumps the package version based on value (e.g. patch)
+        required: true
     paths:
       - 'src/**'             # Все файлы в каталоге src и его подкаталогах
       - 'config/**'          # Если у вас есть каталог с конфигурационными файлами
@@ -26,11 +31,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version-type: |
-            default=patch
-            description=Bumps the package version based on value (e.g. patch)
-            required=true
-
+          version-type: ${{ github.event.inputs.version-type }}
 
   build:
     runs-on: ubuntu-latest
