@@ -1,0 +1,38 @@
+name: 'Bump Version'
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - run: |
+          npm install
+          npm install @vue/cli-service
+          npm run build:prod
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: 'zip'
+          filename: "release-${{ github.ref_name }}.zip"
+          exclusions: '*.git* /*node_modules/* .editorconfig'
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ github.ref_name }}
+          title: "${{ github.ref_name }}"
+          files: "*.zip"
+          draft: false
+          prerelease: false
