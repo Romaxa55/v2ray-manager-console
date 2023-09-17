@@ -4,8 +4,22 @@
 name: Node.js Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'             # Все файлы в каталоге src и его подкаталогах
+      - 'config/**'          # Если у вас есть каталог с конфигурационными файлами
+      - 'public/**'          # Если у вас есть каталог с публичными ресурсами (например, для фронтенда)
+      - 'package.json'       # Для отслеживания изменений в зависимостях
+      - 'package-lock.json'  # Для точного отслеживания версий зависимостей
+      - '.env*'               # Если у вас есть файл с переменными окружения
+      - '.eslintrc'          # Если вы используете ESLint для линтинга вашего кода
+      - 'tsconfig.json'      # Если вы используете TypeScript
+      - '**/*.ts'            # Все TypeScript файлы
+      - '**/*.js'            # Все JavaScript файлы
+
+  workflow_dispatch:
 
 jobs:
   build:
