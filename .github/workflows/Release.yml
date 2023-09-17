@@ -26,6 +26,7 @@ jobs:
         uses: thedoctor0/zip-release@0.7.1
         with:
           type: 'zip'
+          directory: 'dist'
           filename: "release-${{ github.ref_name }}.zip"
           exclusions: '*.git* /*node_modules/* .editorconfig'
 
