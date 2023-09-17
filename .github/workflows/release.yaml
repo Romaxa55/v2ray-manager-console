@@ -3,7 +3,7 @@ name: 'Artifacts'
 on:
   push:
     tags:
-      - '*'
+      - v*
 
 jobs:
   build:
