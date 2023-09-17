@@ -1,45 +1,28 @@
-name: Create Tag
+name: Auto-bump-version on merging a Pull Request
 
 on:
-  workflow_dispatch:
-  push:
+  pull_request:
     branches:
-      - master
-    inputs:
-      version-type:
-        default: patch
-        description: Bumps the package version based on value (e.g. patch)
-        required: true
-    paths:
-      - 'src/**'             # Все файлы в каталоге src и его подкаталогах
-      - 'config/**'          # Если у вас есть каталог с конфигурационными файлами
-      - 'public/**'          # Если у вас есть каталог с публичными ресурсами (например, для фронтенда)
-      - 'package.json'       # Для отслеживания изменений в зависимостях
-      - 'package-lock.json'  # Для точного отслеживания версий зависимостей
-      - '.env*'               # Если у вас есть файл с переменными окружения
-      - '.eslintrc'          # Если вы используете ESLint для линтинга вашего кода
-      - 'tsconfig.json'      # Если вы используете TypeScript
-      - '**/*.ts'            # Все TypeScript файлы
-      - '**/*.js'            # Все JavaScript файлы
-jobs:
-  update-deps:
-    name: Bump Node version
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: neverendingqs/gh-action-node-bump-version-pr@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          version-type: ${{ github.event.inputs.version-type }}
+      - main
+    types: [closed]
+  workflow_dispatch:
 
+jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
-      - uses: actions/checkout@v2
-      - uses: Klemensas/action-autotag@stable
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Bump version
+        id: package_version
+        uses: KageKirin/bump-node-package-version@v0
         with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          tag_prefix: "v"
-          changelog_structure: "**{{messageHeadline}}** {{author}}\n"
-          version: "${{ steps.previous_step.outputs.version }}"
+          patch: true
+
+      - name: Commit new version
+        run: |
+          git commit -am "CI: bump version to ${{ steps.test.package_version.version }}"
+          git tag -m "CI: create new tag" v${{ steps.test.package_version.version }}
+          git push --follow-tags https://${{ github.token }}@github.com/Romaxa55/v2ray-manager-console
