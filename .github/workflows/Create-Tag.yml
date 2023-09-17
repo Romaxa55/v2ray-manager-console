@@ -26,10 +26,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version-type:
-            default: patch
-            description: Bumps the package version based on value (e.g. patch)
-            required: true
+          version-type: |
+            default=patch
+            description=Bumps the package version based on value (e.g. patch)
+            required=true
 
 
   build:
