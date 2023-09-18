@@ -29,7 +29,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
-  productionSourceMap: false,
+  productionSourceMap: true,
 
   devServer: {
      proxy: {
@@ -61,7 +61,10 @@ module.exports = {
         'path': require.resolve('path-browserify'),
         'util': require.resolve('util/')
       }
-    }
+    },
+     output: {
+            sourceMapFilename: '[name].[hash].map'
+        }
   },
 
   chainWebpack(config) {
