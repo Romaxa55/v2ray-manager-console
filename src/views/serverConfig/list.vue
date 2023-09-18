@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column width="100px" align="center" label="key描述">
+      <el-table-column width="100px" align="center" label="Описание ключа">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -20,7 +20,7 @@
         </template>
       </el-table-column>
 
-      
+
 
       <el-table-column align="center" label="Actions" width="241">
         <template slot-scope="scope">
@@ -45,7 +45,7 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 export default {
   name: 'ServerList',
   components: { Pagination },
-  filters: {  
+  filters: {
   },
   data() {
     return {
