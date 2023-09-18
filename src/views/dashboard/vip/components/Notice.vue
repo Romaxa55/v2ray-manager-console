@@ -9,7 +9,7 @@
         <span class="description"> Sharing time - {{ item.updateTime | parseTime('{y}-{m}-{d}')}}</span>
       </div>
 
-        <div class="tui-editor-contents" v-html="item.content"  />
+        <div class="toastui-editor-contents" v-html="item.content"  />
       <!--     <markdown-editor mode='wysiwyg' v-model="item.content"  /> -->
 
       <!-- <ul class="list-inline">
@@ -72,7 +72,7 @@ const carouselPrefix = '?imageView2/2/h/440'
 import { listNotice } from '@/api/notice'
 
 
-import 'tui-editor/dist/tui-editor-contents.css' // editor content
+import '@toast-ui/editor/dist/toastui-editor.css'
 export default {
   components:{},
   data() {
