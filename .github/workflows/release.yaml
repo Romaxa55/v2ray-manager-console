@@ -17,6 +17,7 @@ jobs:
           node-version: 20
 
       - run: |
+          git config --global url."https://github.com/adobe-webplatform/".insteadOf git://github.com/adobe-webplatform/
           yarn install
           yarn run build:prod
 
