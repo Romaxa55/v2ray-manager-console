@@ -100,6 +100,15 @@ module.exports = {
       })
       .end()
 
+    config.module
+      .rule('scss')
+      .oneOf('vue')
+      .use('sass-loader')
+      .tap(options => {
+        options.prependData = `@import "~@/styles/variables.scss";`
+        return options
+      })
+
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
