@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getAccount(id) {
   return request({
-    url: `/api/account/${id}`,
+    url: `/account/${id}`,
     method: 'get'
   })
 }
@@ -18,7 +18,7 @@ export function getAccount(id) {
  */
 export function generatorSubscriptionUrl(data) {
   return request({
-    url: `/api/account/generatorSubscriptionUrl`,
+    url: `/account/generatorSubscriptionUrl`,
     method: 'get',
     data
   })
@@ -29,7 +29,7 @@ export function generatorSubscriptionUrl(data) {
  */
 export function getConnection(id) {
   return request({
-    url: `/api/account/connection/${id}`,
+    url: `/account/connection/${id}`,
     method: 'get'
   })
 }
@@ -40,7 +40,7 @@ export function getConnection(id) {
  */
 export function getV2rayAccount(data) {
   return request({
-    url: `/api/account/v2rayAccount`,
+    url: `/account/v2rayAccount`,
     method: 'get',
     params: data
   })
@@ -51,7 +51,7 @@ export function getV2rayAccount(data) {
  */
 export function accountsList(data) {
   return request({
-    url: `/api/account`,
+    url: `/account`,
     method: 'get',
     params: data
   })
@@ -64,7 +64,7 @@ export function accountsList(data) {
  */
 export function updateAccount(data) {
   return request({
-    url: `/api/account`,
+    url: `/account`,
     method: 'put',
     data
   })

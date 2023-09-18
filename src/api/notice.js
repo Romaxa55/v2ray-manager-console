@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function listNotice() {
   return request({
-    url: '/api/notice',
+    url: '/notice',
     method: 'get',
   })
 }
 
 export function addNotice(data) {
   return request({
-    url: '/api/notice',
+    url: '/notice',
     method: 'post',
     data
   })
@@ -17,20 +17,20 @@ export function addNotice(data) {
 
 export function updateNotice(data) {
   return request({
-    url: '/api/notice',
+    url: '/notice',
     method: 'put',
     data
   })
 }
 export function getNotice(id) {
   return request({
-    url: `/api/notice/${id}`,
+    url: `/notice/${id}`,
     method: 'get'
   })
 }
 export function delNotice(id) {
   return request({
-    url: `/api/notice/${id}`,
+    url: `/notice/${id}`,
     method: 'delete'
   })
 }

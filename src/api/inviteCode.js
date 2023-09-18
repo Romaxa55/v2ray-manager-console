@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function list(page) {
   return request({
-    url: `/api/invite-code`,
+    url: `/invite-code`,
     method: 'get',
     params: page
   })
@@ -18,7 +18,7 @@ export function list(page) {
  */
 export function del(id) {
   return request({
-    url: `/api/invite-code/${id}`,
+    url: `/invite-code/${id}`,
     method: 'DELETE'
   })
 }
@@ -28,7 +28,7 @@ export function del(id) {
  */
 export function generate(data) {
   return request({
-    url: `/api/invite-code`,
+    url: `/invite-code`,
     method: 'post',
     data
   })

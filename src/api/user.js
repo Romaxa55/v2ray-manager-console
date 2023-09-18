@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function login(data) {
   console.log(data)
   return request({
-    url: '/api/user/login',
+    url: '/user/login',
     method: 'post',
     data
   })
@@ -11,7 +11,7 @@ export function login(data) {
 
 export function reg(data) {
   return request({
-    url: '/api/user/reg',
+    url: '/user/reg',
     method: 'post',
     params: { 'vCode': data.vCode },
     data
@@ -20,7 +20,7 @@ export function reg(data) {
 
 export function forgot(data) {
   return request({
-    url: '/api/user/forgot',
+    url: '/user/forgot',
     method: 'post',
     params: { 'vCode': data.vCode },
     data
@@ -30,21 +30,21 @@ export function forgot(data) {
 
 export function changepassword(data) {
   return request({
-    url: '/api/user/change-password',
+    url: '/user/change-password',
     method: 'post',
     data
   })
 }
 export function getInfo() {
   return request({
-    url: '/api/user/info',
+    url: '/user/info',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: '/api/user/logout',
+    url: '/user/logout',
     method: 'get'
   })
 }
@@ -54,7 +54,7 @@ export function logout() {
  */
 export function userList(pageable) {
   return request({
-    url: '/api/user',
+    url: '/user',
     method: 'get',
     params: pageable
   })
@@ -66,7 +66,7 @@ export function userList(pageable) {
  */
 export function addUser(data) {
   return request({
-    url: '/api/user',
+    url: '/user',
     method: 'post',
     data
   })
@@ -90,7 +90,7 @@ export function addremark(data) {
  */
 export function getUser(id) {
   return request({
-    url: `/api/user/${id}`,
+    url: `/user/${id}`,
     method: 'get'
   })
 }
@@ -100,7 +100,7 @@ export function getUser(id) {
  */
 export function delUser(id) {
   return request({
-    url: `/api/user/${id}`,
+    url: `/user/${id}`,
     method: 'delete'
   })
 }
@@ -111,7 +111,7 @@ export function delUser(id) {
  */
 export function updateUserStatus(data) {
   return request({
-    url: '/api/user/status',
+    url: '/user/status',
     method: 'put',
     data
   })
