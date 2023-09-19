@@ -164,6 +164,13 @@ export default {
       }
       return statusMap[status]
     },
+    created() {
+      // Здесь вы можете получить список серверов, например, с API или другого источника данных
+      // После получения списка серверов:
+      if (this.serverList.length > 0) {
+        this.serverId = this.serverList[0].value; // Установка serverId значением первого сервера в списке
+      }
+    },
     parseTime(time) {
       if (!time) return ''
       const date = new Date(time)
@@ -229,7 +236,7 @@ export default {
         status: '1',
         addDay: 0
       },
-      connections: 0,// connections 是全局的不是row基本，坑
+      connections: 0,// connections
       accountDialog: false,
 
       roles: store.getters.roles,
@@ -313,6 +320,10 @@ export default {
           localserver.label = server.serverName
           this.serverList[i] = localserver
 
+        }
+        if (this.serverList.length > 0) {
+          this.serverId = this.serverList[0].value;
+          this.serverChange(); // Вызываем метод serverChange для обновления данных на основе выбранного сервера
         }
 
       })
