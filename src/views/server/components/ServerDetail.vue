@@ -1,17 +1,20 @@
 <template>
-  <div class="createPost-container">
-    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="200px">
+
+  <el-row class="small">
+    <div class="container small">
+    <el-form ref="postForm" :model="postForm" :rules="rules" label-position="top" label-width="120px"
+             >
 
       <el-form-item label="Имя сервера" prop="serverName">
-        <el-input v-model="postForm.serverName" />
+        <el-input v-model="postForm.serverName"/>
       </el-form-item>
 
       <el-form-item label="Домен" prop="clientDomain">
-        <el-input v-model="postForm.clientDomain" />
+        <el-input v-model="postForm.clientDomain"/>
       </el-form-item>
 
       <el-form-item label="Порт" prop="clientPort">
-        <el-input v-model="postForm.clientPort" />
+        <el-input v-model="postForm.clientPort"/>
       </el-form-item>
 
       <el-form-item label="Поддержка TLS" prop="supportTLS">
@@ -21,31 +24,31 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="Proxy ip" prop="proxyIp">
-        <el-input v-model="postForm.proxyIp" placeholder="127.0.0.1" />
+        <el-input v-model="postForm.proxyIp" placeholder="127.0.0.1"/>
       </el-form-item>
       <el-form-item label="Proxy порт" prop="proxyPort">
-        <el-input v-model="postForm.proxyPort" />
+        <el-input v-model="postForm.proxyPort"/>
       </el-form-item>
       <el-form-item label="v2ray ip" prop="v2rayIp">
-        <el-input v-model="postForm.v2rayIp" placeholder="127.0.0.1" />
+        <el-input v-model="postForm.v2rayIp" placeholder="127.0.0.1"/>
       </el-form-item>
       <el-form-item label="v2ray порт" prop="v2rayPort">
-        <el-input v-model="postForm.v2rayPort" />
+        <el-input v-model="postForm.v2rayPort"/>
       </el-form-item>
       <el-form-item label="v2ray API порт" prop="v2rayManagerPort">
-        <el-input v-model="postForm.v2rayManagerPort" />
+        <el-input v-model="postForm.v2rayManagerPort"/>
       </el-form-item>
       <el-form-item label="Несколько трафиков" prop="Multiple">
-        <el-input v-model="postForm.multiple" placeholder="1" />
+        <el-input v-model="postForm.multiple" placeholder="1"/>
       </el-form-item>
       <el-form-item label="v2rayTag" prop="inboundTag">
-        <el-input v-model="postForm.inboundTag" />
+        <el-input v-model="postForm.inboundTag"/>
       </el-form-item>
       <el-form-item label="ws путь" prop="wsPath">
-        <el-input v-model="postForm.wsPath" placeholder="/ws/%s/" />
+        <el-input v-model="postForm.wsPath" placeholder="/ws/%s/"/>
       </el-form-item>
       <el-form-item label="Описание услуг">
-        <el-input v-model="postForm.desc" />
+        <el-input v-model="postForm.desc"/>
       </el-form-item>
 
       <el-form-item label="Level" prop="level">
@@ -59,7 +62,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="alterId" prop="alterId">
-        <el-input v-model="postForm.alterId" placeholder="версия v2ray>(4.35.0) равна 0" />
+        <el-input v-model="postForm.alterId" placeholder="версия v2ray>(4.35.0) равна 0"/>
       </el-form-item>
 
       <el-form-item label="Состояние сервера" prop="status">
@@ -77,11 +80,14 @@
         Отправить
       </el-button>
     </el-form>
-  </div>
+    </div>
+  </el-row>
+
 </template>
 
 <script>
-import { addServer, getServer, updateServer } from '@/api/server'
+import {addServer, getServer, updateServer} from '@/api/server'
+
 const defaultForm = {
   serverName: '',
   clientDomain: '',
@@ -111,32 +117,32 @@ const defaultForm = {
   wsPath: '/ws/%s/'
 }
 const defaultRules = {
-  serverName: { required: true, trigger: 'blur' },
-  clientDomain: { required: true, trigger: 'blur' },
-  clientPort: { required: true, trigger: 'blur' },
-  supportTLS: { required: true, trigger: 'blur' },
+  serverName: {required: true, trigger: 'blur'},
+  clientDomain: {required: true, trigger: 'blur'},
+  clientPort: {required: true, trigger: 'blur'},
+  supportTLS: {required: true, trigger: 'blur'},
 
   // proxy ip port;
 
-  proxyIp: { required: true, trigger: 'blur' },
-  proxyPort: { required: true, trigger: 'blur' },
+  proxyIp: {required: true, trigger: 'blur'},
+  proxyPort: {required: true, trigger: 'blur'},
   // v2ray открыть IP и порт
-  v2rayIp: { required: true, trigger: 'blur' },
-  v2rayPort: { required: true, trigger: 'blur' },
-  v2rayManagerPort: { required: true, trigger: 'blur' },
+  v2rayIp: {required: true, trigger: 'blur'},
+  v2rayPort: {required: true, trigger: 'blur'},
+  v2rayManagerPort: {required: true, trigger: 'blur'},
   // Несколько трафиков
-  multiple: { required: true, trigger: 'blur' },
+  multiple: {required: true, trigger: 'blur'},
 
   // иллюстрировать
   desc: '',
   // Состояние сервера
-  status: { required: true, trigger: 'blur' },
+  status: {required: true, trigger: 'blur'},
 
-  inboundTag: { required: true, trigger: 'blur' },
+  inboundTag: {required: true, trigger: 'blur'},
   // Максимальное количество подключений для одной учетной записи
   // maxConnection:{ required: true, trigger: 'blur' },
   // ws путь
-  wsPath: { required: true, trigger: 'blur' }
+  wsPath: {required: true, trigger: 'blur'}
 }
 
 export default {
@@ -153,14 +159,15 @@ export default {
       loading: false,
       rules: Object.assign({}, defaultRules),
       tempRoute: {},
-      statusOptions: [{ value: 1, label: 'В сети' }, { value: 0, label: 'Не в сети' }],
-      levelOptions: [{ value: 0, label: 'Уровень 0' }, { value: 1, label: 'Уровень 1' }, { value: 2, label: 'Уровень 2' }, { value: 3, label: 'Уровень 3' }]
+      statusOptions: [{value: 1, label: 'В сети'}, {value: 0, label: 'Не в сети'}],
+      levelOptions: [{value: 0, label: 'Уровень 0'}, {value: 1, label: 'Уровень 1'}, {
+        value: 2,
+        label: 'Уровень 2'
+      }, {value: 3, label: 'Уровень 3'}]
 
     }
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
@@ -213,29 +220,18 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
-.createPost-container {
-  position: relative;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* для вертикального центрирования, если нужно */
+  padding: 20px;
+}
 
-  .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-
-    .postInfo-container {
-      position: relative;
-      @include clearfix;
-      margin-bottom: 10px;
-
-      .postInfo-container-item {
-        float: left;
-      }
-    }
-  }
-
-  .word-counter {
-    width: 40px;
-    position: absolute;
-    right: 10px;
-    top: 0px;
-  }
+.el-form {
+  flex: 1; /* занимает всю доступную ширину, но можно настроить по желанию */
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 20px; /* отступ от боковой панели */
 }
 
 .article-textarea ::v-deep {

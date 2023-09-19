@@ -1,5 +1,6 @@
 <template>
-  <div class="createPost-container">
+ <el-row class="small">
+    <div class="container small">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="100px">
 
       <el-form-item label="Email" prop="email">
@@ -26,7 +27,8 @@
         Сохранить
       </el-button>
     </el-form>
-  </div>
+    </div>
+ </el-row>
 </template>
 
 <script>
@@ -106,30 +108,20 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
-.createPost-container {
-  position: relative;
-
-  .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-
-    .postInfo-container {
-      position: relative;
-      @include clearfix;
-      margin-bottom: 10px;
-
-      .postInfo-container-item {
-        float: left;
-      }
-    }
-  }
-
-  .word-counter {
-    width: 40px;
-    position: absolute;
-    right: 10px;
-    top: 0px;
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* для вертикального центрирования, если нужно */
+  padding: 20px;
 }
+
+.el-form {
+  flex: 1; /* занимает всю доступную ширину, но можно настроить по желанию */
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-right: 20px; /* отступ от боковой панели */
+}
+
 
 .article-textarea ::v-deep {
   textarea {

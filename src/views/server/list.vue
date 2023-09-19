@@ -1,76 +1,36 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-
-      <el-table-column width="100px" align="center" label="Имя">
-        <template slot-scope="scope">
-          <span>{{ scope.row.serverName }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="150px" align="center" label="Domain">
-        <template slot-scope="scope">
-          <span>{{ scope.row.clientDomain }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="150px" align="center" label="Proxy">
-        <template slot-scope="scope">
-          <span>{{ scope.row.proxyIp }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="80px" align="center" label="v2ray Ip">
-        <template slot-scope="scope">
-          <span>{{ scope.row.v2rayIp }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="80px" align="center" label="wsPath">
-        <template slot-scope="scope">
-          <span>{{ scope.row.wsPath }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="80px" align="center" label="Level">
+      <el-table-column prop="serverName" label="Имя" align="center" />
+      <el-table-column prop="clientDomain" label="Domain" align="center" />
+      <el-table-column prop="proxyIp" label="Proxy" align="center" />
+      <el-table-column prop="v2rayIp" label="v2ray Ip" align="center" />
+      <el-table-column prop="wsPath" label="wsPath" align="center" />
+      <el-table-column prop="level" label="Level" align="center">
         <template slot-scope="{row}">
           <span>{{ row.level | levelFilter }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column width="80px" align="center" label="alterId">
-        <template slot-scope="{row}">
-          <span>{{ row.alterId }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="200px" align="center" label="Описание">
-        <template slot-scope="scope">
-          <span>{{ scope.row.desc }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="80px" align="center" label="Состояние сервера">
+      <el-table-column prop="alterId" label="alterId" align="center" />
+      <el-table-column prop="desc" label="Описание" align="center" />
+      <el-table-column prop="status" label="Состояние сервера" align="center">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">
             {{ row.status |statusFilter2 }}
           </el-tag>
-
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="Действие" width="241">
+      <el-table-column label="Действие" align="center">
         <template slot-scope="scope">
+        <el-row class="mb-4" style="display: flex; align-items: center; justify-content: space-between;">
           <router-link :to="'/server/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">
-              Ред.
-            </el-button>
+            <el-button type="primary" size="small" icon="el-icon-edit" circle style="margin-right: 5px;" />
           </router-link>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Удалить</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row.id) " icon="el-icon-delete" circle/>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
   </div>
 </template>
@@ -123,8 +83,8 @@ export default {
   },
   methods: {
     handleDelete(id) {
-      this.$confirm('Эта операция будет удалена без возможности восстановления. Продолжить?', 'Уведомление', {
-        confirmButtonText: 'Конечно',
+      this.$confirm('После выполнения этой операции восстановление будет невозможно. Вы уверены, что хотите продолжить?', 'Подсказка', {
+        confirmButtonText: 'Уверен',
         cancelButtonText: 'Отмена',
         type: 'warning'
       }).then(() => {
@@ -137,7 +97,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: 'Восстановить'
+            message: 'Восстановлено'
           })
         })
       })
@@ -154,13 +114,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.edit-input {
-  padding-right: 100px;
-}
-.cancel-btn {
-  position: absolute;
-  right: 15px;
-  top: 10px;
+<style>
+.el-table th {
+    font-size: 12px; /* или любой другой размер, который вам подходит */
 }
 </style>
+
+

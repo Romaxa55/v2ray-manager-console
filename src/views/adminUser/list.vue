@@ -1,41 +1,25 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="listLoading" :data="list"  border fit highlight-current-row  style="width: 100%">
+      <el-table-column prop="email" label="Email" align="" />
+      <el-table-column prop="role" label="Роль" align="center" />
 
-      <el-table-column width="200px" align="center" label="email">
+      <el-table-column prop="remark" label="Примечание" align="center" />
+      <!-- Вставляем новую колонку для уровня -->
+      <el-table-column prop="status" label="Статус" align="center">
+          <template slot-scope="{row}">
+              <span>{{ row.status | statusFilter1 }}</span>
+          </template>
+      </el-table-column>
+      <el-table-column label="Действие" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+        <el-row class="mb-4" style="display: flex; align-items: center; justify-content: space-between;">
+          <el-button type="danger" size="small" @click="updateStatus(scope.row.id,scope.row.status)" round>{{ scope.row.status | statusFilter3 }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)" round icon="el-icon-delete" />
+          </el-row>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" align="center" label="Роль">
-        <template slot-scope="scope">
-          <span>{{ scope.row.role ||statusFilter2 }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="200px" align="center" label="Примечание">
-        <template slot-scope="scope">
-          <span>{{ scope.row.remark}}</span>
-          <span ><el-button type="text" @click="addRemark(scope.row.email,scope.row.id)">Изменить примечания</el-button></span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="100px" align="center" label="Статус">
-        <template slot-scope="{row}">
-          <el-tag>
-            {{ row.status |statusFilter1 }}
-          </el-tag>
-
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="Действие" width="241">
-        <template slot-scope="scope">
-          <el-button type="danger" size="small" @click="updateStatus(scope.row.id,scope.row.status)">{{ scope.row.status | statusFilter3 }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">Удалить</el-button>
-        </template>
-      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize" @pagination="getList" />
@@ -73,7 +57,7 @@ export default {
     },
     statusFilter3(status) {
       const statusMap = {
-        1: 'Банить',
+        1: 'Забанить',
         0: 'Разбанить'
       }
       return statusMap[status]
@@ -163,5 +147,10 @@ export default {
   position: absolute;
   right: 15px;
   top: 10px;
+}
+</style>
+<style>
+.el-table th {
+    font-size: 12px; /* или любой другой размер, который вам подходит */
 }
 </style>
