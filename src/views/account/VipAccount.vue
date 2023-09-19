@@ -7,10 +7,10 @@
             <div slot="header">
               Счет: {{ account.accountNo }}
             </div>
-            <el-form-item label="Уровень пользователя:">
+            <el-form-item label="Доступ:">
               {{ account.level |levelFilter }}
             </el-form-item>
-            <el-form-item label="Действителен до:">
+            <el-form-item label="Активен до:">
               <span>
               <font v-if="account.toDate>new Date().getTime()">  {{
                   account.toDate | parseTime('{y}-{m}-{d} {h}:{i}')
@@ -19,23 +19,23 @@
             </span>
             </el-form-item>
 
-            <el-form-item label="Статус учетной записи:">
+            <el-form-item label="Статус:">
               <span>
               <font v-if="account.status == 1">  {{ account.status |accountStatusFilter }}</font>
               <font v-else color="red">  {{ account.status |accountStatusFilter }}</font>
             </span>
             </el-form-item>
 
-            <el-form-item v-if="account.statVO" label="Дата расчета:">
+            <el-form-item v-if="account.statVO" label="Платежный день:">
               <span>{{ account.statVO.toDate  | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
             </el-form-item>
-            <el-form-item label="Скорость соединения:">
+            <el-form-item label="Лимит скорости:">
               <span></span>
-              <span>{{ account.speed | speedFilter }}</span>
+              <span>{{ account.speed }} Кбит/с</span>
             </el-form-item>
-            <el-form-item label="Длительность цикла:">
+            <el-form-item label="Расчет цикла:">
               <!-- <span>周期：</span> -->
-              {{ account.cycle }} дней/период
+              {{ account.cycle }} дней = циклу
             </el-form-item>
             <el-form-item label="Трафик:">
 
@@ -46,9 +46,9 @@
               <font v-else color="red">{{
                   account.statVO ? (account.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0
                 }}</font>
-              /{{ account.bandwidth }}/GB</span>
+              из {{ account.bandwidth }} GB</span>
             </el-form-item>
-            <el-form-item label="Количество соединений:">{{ account.maxConnection }}/акк
+            <el-form-item label="Лимит коннектов:">{{ account.maxConnection }}
             </el-form-item>
 
 
@@ -93,20 +93,19 @@
                   </el-select>
                 </el-form-item>
                 <div v-if="v2rayAccount">
-                  <el-form-item label="Адрес:">{{ v2rayAccount.add }}</el-form-item>
-                  <el-form-item label="Порт:">{{ v2rayAccount.port }}</el-form-item>
-                  <el-form-item label="ID пользователя:">{{ v2rayAccount.id }}</el-form-item>
-                  <el-form-item label="Дополнительный ID (alterId):">{{ v2rayAccount.aid }}</el-form-item>
-                  <el-form-item label="Метод шифрования:">auto</el-form-item>
-                  <el-form-item label="Транспортный протокол:">{{ v2rayAccount.net }}</el-form-item>
-                  <el-form-item label="Тип маскировки:">{{ v2rayAccount.type }}</el-form-item>
-                  <el-form-item label="Транспортное доменное имя (host):">{{ v2rayAccount.host }}</el-form-item>
-                  <el-form-item label="Путь (path):">{{ v2rayAccount.path }}</el-form-item>
-                  <el-form-item label="Транспортная безопасность на нижнем уровне (tls):">{{
-                      v2rayAccount.tls
-                    }}
-                  </el-form-item>
-                  <el-form-item label="Описание сервера:">{{ server.desc }}</el-form-item>
+
+                  <el-form-item label="Адрес сервера:">{{ v2rayAccount.add }}</el-form-item>
+                  <el-form-item label="Сетевой порт:">{{ v2rayAccount.port }}</el-form-item>
+                  <el-form-item label="Идентификатор пользователя:">{{ v2rayAccount.id }}</el-form-item>
+                  <el-form-item label="Доп. идентификатор (alterId):">{{ v2rayAccount.aid }}</el-form-item>
+                  <el-form-item label="Метод кодирования:">auto</el-form-item>
+                  <el-form-item label="Протокол передачи данных:">{{ v2rayAccount.net }}</el-form-item>
+                  <el-form-item label="Метод обфускации:">{{ v2rayAccount.type }}</el-form-item>
+                  <el-form-item label="Доменное имя (если используется):">{{ v2rayAccount.host }}</el-form-item>
+                  <el-form-item label="Путь для WebSocket (если используется):">{{ v2rayAccount.path }}</el-form-item>
+                  <el-form-item label="Использовать защищенное соединение (TLS)?:">{{ v2rayAccount.tls }}</el-form-item>
+                  <el-form-item label="Описание выбранного сервера:">{{ server.desc }}</el-form-item>
+
 
                 </div>
               </el-col>
@@ -164,8 +163,17 @@ export default {
         3: 'Уровень 3'
       }
       return statusMap[status]
-    }
-    ,
+    },
+    parseTime(time) {
+      if (!time) return ''
+      const date = new Date(time)
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const year = date.getFullYear()
+      return `${day}.${month}.${year} ${hours}:${minutes}`
+    },
     speedFilter: function (v) {
       if (v <= 1024) {
         return 'Плавный'
@@ -183,7 +191,7 @@ export default {
       return statusMap[status]
     }, accountStatusFilter(status) {
       const statusMap = {
-        '1': 'Нормальный',
+        '1': 'Активный',
         '0': 'Заблокирован'
       }
       return statusMap[status]

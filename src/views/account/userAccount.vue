@@ -16,11 +16,11 @@
 
       <el-table-column align="left" label="Аккаунты">
         <template slot-scope="scope">
-          <div><span>Пользователь: {{ scope.row.userVO ? scope.row.userVO.email : '' }}</span></div>
-          <div><span>ID Аккаунт: {{ scope.row.accountNo }}</span></div>
-          <div><span>Примечание: {{ scope.row.userVO ? scope.row.userVO.remark : '' }}</span></div>
+          <div><span>Email: {{ scope.row.userVO ? scope.row.userVO.email : '' }}</span></div>
+          <div><span>ID: {{ scope.row.accountNo }}</span></div>
+          <div><span>Описание: {{ scope.row.userVO ? scope.row.userVO.remark : '' }}</span></div>
           <div>
-            <span> Срок действия: </span>
+            <span> Активен до: </span>
             <span>
               <font v-if="scope.row.toDate > new Date().getTime()">
                   {{ scope.row.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}
@@ -31,7 +31,7 @@
             </span>
           </div>
           <div v-if="scope.row.statVO">
-            <span>Время расчета: {{ scope.row.statVO.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+            <span>Платежный день: {{ scope.row.statVO.toDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
           </div>
         </template>
       </el-table-column>
@@ -39,8 +39,8 @@
 
       <el-table-column align="left" label="">
         <template slot-scope="scope">
-          <div><span>Скорость: {{ scope.row.speed | speedFilter }}</span></div>
-          <div>Цикл: {{ scope.row.cycle }} дней/цикл</div>
+          <div><span>Лимит скорости: {{ scope.row.speed }} Кбит/с</span></div>
+          <div>Цикл: {{ scope.row.cycle }} день</div>
           <div>Трафик: <span>
                 <font
                   v-if="(scope.row.statVO ? (scope.row.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0) < scope.row.bandwidth">
@@ -49,16 +49,16 @@
                 <font v-else color="red">
                     {{ scope.row.statVO ? (scope.row.statVO.flow / 1024 / 1024 / 1024).toFixed(2) : 0 }}
                 </font>
-                /{{ scope.row.bandwidth }}GB/цикл</span>
+                из {{ scope.row.bandwidth }}GB</span>
           </div>
         </template>
       </el-table-column>
 
       <el-table-column align="left" label="">
         <template slot-scope="scope">
-          <div>Кол-во соед.: {{ scope.row.maxConnection }}/аккаунт</div>
-          <div>Уровень аккаунта: {{ scope.row.level | levelFilter }}</div>
-          <div>Статус аккаунта: {{ scope.row.status | accountStatusFilter }}</div>
+          <div>Лимит коннектов: {{ scope.row.maxConnection }}</div>
+          <div>Доступ: {{ scope.row.level | levelFilter }}</div>
+          <div>Статус: {{ scope.row.status | accountStatusFilter }}</div>
         </template>
       </el-table-column>
 
@@ -157,6 +157,16 @@ export default {
   components: { Pagination, VueQr },
   directives: { permission },
   filters: {
+        parseTime(time) {
+        if (!time) return ''
+        const date = new Date(time)
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const year = date.getFullYear()
+        return `${day}.${month}.${year} ${hours}:${minutes}`
+    },
      accountStatusFilter(status) {
       const statusMap = {
         '1': 'Активный',
