@@ -44,12 +44,12 @@
           </span>
         </el-form-item>
 
-        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Войти</el-button>
 
         <div class="tips">
           <el-row>
             <el-col :span="9" :push="1">
-              <el-button type="text" @click.native.prevent="onVisible('reg')"> Регистрация</el-button>
+              <el-button type="text" @click.native.prevent="onVisible('reg')">Регистрация</el-button>
 
             </el-col>
             <el-col :span="8" :push="11"> <el-button type="text" @click.native.prevent="onVisible('forgot')">Забыл пароль?</el-button></el-col>

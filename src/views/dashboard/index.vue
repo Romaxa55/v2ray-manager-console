@@ -14,7 +14,7 @@ export default {
   components: { adminDashboard, vipDashboard },
   data() {
     return {
-      currentRole: 'adminDashboard'
+      currentRole: 'vipDashboard'
     }
   },
   computed: {

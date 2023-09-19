@@ -76,10 +76,10 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [
       {
-        path: 'dashboard',
+        path: '/dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        name: 'Панель',
+        meta: { title: 'Панель', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -92,8 +92,8 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
+        name: 'Профиль',
+        meta: { title: 'Профиль', icon: 'user', noCache: true }
       }
     ]
   },
@@ -111,24 +111,24 @@ export const asyncRoutes = [
     path: '/server',
     component: Layout,
     redirect: '/server/list',
-    name: 'Сервер',
+    name: 'Управление серверами',
     meta: {
-      title: 'Сервер',
-      icon: 'example',
+      title: 'Управление серверами',
+      icon: 'servers',
       roles: ['admin']
     },
     children: [
       {
         path: 'create',
         component: () => import('@/views/server/create'),
-        name: 'Создать',
-        meta: { title: 'Создать сервер', icon: 'edit',roles: ['admin'] }
+        name: 'Добавить',
+        meta: { title: 'Добавить сервер', icon: 'edit',roles: ['admin'] }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/server/edit'),
-        name: 'Изменить',
-        meta: { title: 'Изменить сервер', noCache: true, activeMenu: '/server/list' ,roles: ['admin'] },
+        name: 'Список серверов',
+        meta: { title: 'Список серверов', noCache: true, activeMenu: '/server/list' ,roles: ['admin'] },
         hidden: true
       },
       {
@@ -144,10 +144,10 @@ export const asyncRoutes = [
     path: '/adminUser',
     component: Layout,
     redirect: '/adminUser/list',
-    name: 'Управление пользователями',
+    name: 'Пользователи',
     meta: {
       title: 'Управление пользователями',
-      icon: 'example',
+      icon: 'peoples',
       roles: ['admin']
     },
     children: [
@@ -170,19 +170,19 @@ export const asyncRoutes = [
     path: '/account',
     component: Layout,
     name:'account',
-    meta:{icon: 'tab', title:"Баланс"},
+    meta:{icon: 'tab', title:"Статистика v2ray"},
     children: [
       {
         path: 'userAccount',
         component: () => import('@/views/account/userAccount'),
         name: 'User Account',
-        meta: { title: 'Управление аккаунтом' , roles: ['admin'] },
+        meta: { title: 'Пользователи v2ray',  icon: "peoples", roles: ['admin'] },
       },
       {
         path: 'VipAccount',
         component: () => import('@/views/account/VipAccount'),
-        name: 'Баланс',
-        meta: { title: 'Мой баланс' , roles: ['vip'] }
+        name: 'Статистика',
+        meta: { title: 'Доступы и статистика', icon: "qr", roles: ['vip'] }
 
       }
     ]
@@ -192,31 +192,31 @@ export const asyncRoutes = [
     path: '/notice',
     component: Layout,
     redirect: '/notice/list',
-    name: 'Управление объявлениями',
+    name: 'Уведомления пользователей',
     meta: {
-      title: 'Управление',
-      icon: 'eye-open',
+      title: 'Уведомления пользователей',
+      icon: 'message',
       roles: ['admin']
     },
     children: [
       {
         path: 'create',
         component: () => import('@/views/notice/create'),
-        name: 'Создать объявление',
-        meta: { title: 'Создать объявление', icon: 'edit',roles: ['admin'] }
+        name: 'Создать уведомление',
+        meta: { title: 'Создать уведомление', icon: 'edit',roles: ['admin'] }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/notice/edit'),
-        name: 'Уведомление об изменении',
-        meta: { title: 'Уведомление об изменении', noCache: true, activeMenu: '/notice/list' ,roles: ['admin'] },
+        name: 'Редактировать уведомление',
+        meta: { title: 'Редактировать уведомление', noCache: true, activeMenu: '/notice/list' ,roles: ['admin'] },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/views/notice/list'),
-        name: 'Список объявлений',
-        meta: { title: 'Список объявлений', icon: 'list' }
+        name: 'Список уведомлений',
+        meta: { title: 'Список уведомлений', icon: 'list' }
       }
     ]
   }
@@ -227,7 +227,7 @@ export const asyncRoutes = [
     redirect: '/inviteCode/list',
     name: 'inviteCode',
     meta: {
-      title: 'Список кодов приглашения',
+      title: 'Приглашения',
       icon: 'list',
       roles: ['vip']
     },
@@ -236,8 +236,8 @@ export const asyncRoutes = [
       {
         path: 'list',
         component: () => import('@/views/inviteCode/list'),
-        name: 'Список кодов приглашения',
-        meta: { title: 'Список кодов приглашения', icon: 'list' }
+        name: 'Приглашения',
+        meta: { title: 'Приглашения', icon: 'invite' }
       }
     ]
   }
@@ -246,31 +246,31 @@ export const asyncRoutes = [
     path: '/serverConfig',
     component: Layout,
     redirect: '/serverConfig/list',
-    name: 'Управление',
+    name: 'Настройки',
     meta: {
-      title: 'Управление параметрами',
-      icon: 'tab',
+      title: 'Настройки',
+      icon: 'settings',
       roles: ['admin']
     },
     children: [
       {
+        path: 'list',
+        component: () => import('@/views/serverConfig/list'),
+        name: 'Список параметров',
+        meta: { title: 'Список', icon: 'list' }
+      },
+      {
         path: 'create',
         component: () => import('@/views/serverConfig/create'),
-        name: 'Создать параметры',
-        meta: { title: 'Создать параметры', icon: 'edit',roles: ['admin'] }
+        name: 'Создать параметр',
+        meta: { title: 'Создать', icon: 'edit',roles: ['admin'] }
       },
       {
         path: 'edit/:id(\\d+)',
         component: () => import('@/views/serverConfig/edit'),
-        name: 'Изменить параметры',
-        meta: { title: 'Изменить параметры', noCache: true, activeMenu: '/serverConfig/list' ,roles: ['admin'] },
+        name: 'Изменить',
+        meta: { title: 'Изменить', noCache: true, activeMenu: '/serverConfig/list' ,roles: ['admin'] },
         hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/serverConfig/list'),
-        name: 'Список параметров',
-        meta: { title: 'Список параметров', icon: 'list' }
       }
     ]
   },

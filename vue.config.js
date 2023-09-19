@@ -34,9 +34,9 @@ module.exports = {
   devServer: {
      proxy: {
        '/api': {
-         target: 'http://localhost:9091', // адрес вашего бэкенда
+         target: 'https://amsterdam.roshamagin.site', // адрес вашего бэкенда
          secure: false,
-         pathRewrite: { '^/api': '' }
+         // pathRewrite: { '^/api': '' }
        },
      },
     port: port,

@@ -14,7 +14,7 @@
 
     <el-table v-loading="listLoading" :data="list" fit highlight-current-row style="width: 100%">
 
-      <el-table-column align="left" label="Информация об аккаунте">
+      <el-table-column align="left" label="Аккаунты">
         <template slot-scope="scope">
           <div><span>Пользователь: {{ scope.row.userVO ? scope.row.userVO.email : '' }}</span></div>
           <div><span>ID Аккаунт: {{ scope.row.accountNo }}</span></div>
